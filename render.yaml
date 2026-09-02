@@ -1,0 +1,24 @@
+# ============================================================
+# CONFIGURAÇÃO DO RENDER
+# Depois de colocar o projeto no GitHub, o Render pode usar
+# este arquivo para criar automaticamente o Web Service.
+# ============================================================
+services:
+  - type: web
+    name: multiservicos-portfolio
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: SUPABASE_STORAGE_BUCKET
+        value: uploads

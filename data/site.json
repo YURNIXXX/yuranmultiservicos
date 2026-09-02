@@ -1,0 +1,94 @@
+{
+  "settings": {
+    "siteName": "Nexa MultiServiços",
+    "tagline": "Soluções técnicas, criativas e profissionais num só lugar.",
+    "heroTitle": "Várias competências. Uma equipa. Soluções que funcionam.",
+    "heroText": "Eletricidade, Design Gráfico, Marketing, Agropecuária e outros serviços profissionais reunidos num único portfólio.",
+    "whatsapp": "258840000000",
+    "phone": "+258 84 000 0000",
+    "email": "contacto@seudominio.co.mz",
+    "location": "Maputo, Moçambique",
+    "about": "Este é um texto editável sobre a empresa. Use o painel administrativo para substituir esta informação pela história, missão, visão, valores e apresentação da sua equipa.",
+    "instagram": "#",
+    "facebook": "#",
+    "linkedin": "#"
+  },
+  "services": [
+    {
+      "id": "eletricidade",
+      "title": "Eletricidade",
+      "icon": "⚡",
+      "color": "#F28C28",
+      "description": "Instalações, manutenção, diagnóstico, quadros elétricos, proteção e soluções técnicas.",
+      "featured": true
+    },
+    {
+      "id": "design-grafico",
+      "title": "Design Gráfico",
+      "icon": "✦",
+      "color": "#708D75",
+      "description": "Identidade visual, flyers, social media, branding, banners e materiais promocionais.",
+      "featured": true
+    },
+    {
+      "id": "marketing",
+      "title": "Marketing",
+      "icon": "↗",
+      "color": "#476C9B",
+      "description": "Gestão de redes sociais, conteúdo, campanhas e comunicação digital.",
+      "featured": true
+    },
+    {
+      "id": "agropecuaria",
+      "title": "Agropecuária",
+      "icon": "🌿",
+      "color": "#77966D",
+      "description": "Serviços técnicos relacionados com produção, plantas, animais e apoio agropecuário.",
+      "featured": true
+    },
+    {
+      "id": "futuro-1",
+      "title": "Novo serviço",
+      "icon": "+",
+      "color": "#7B7F8C",
+      "description": "Espaço reservado para um serviço futuro.",
+      "featured": false
+    },
+    {
+      "id": "futuro-2",
+      "title": "Novo serviço",
+      "icon": "+",
+      "color": "#7B7F8C",
+      "description": "Espaço reservado para um serviço futuro.",
+      "featured": false
+    }
+  ],
+  "team": [
+    {
+      "id": "tecnico-1",
+      "name": "Nome do Profissional",
+      "role": "Técnico / Especialista",
+      "bio": "Breve apresentação do profissional, especialidades, experiência e competências.",
+      "photo": "",
+      "cv": ""
+    },
+    {
+      "id": "tecnico-2",
+      "name": "Nome do Profissional",
+      "role": "Designer / Marketing",
+      "bio": "Breve apresentação do profissional, especialidades, experiência e competências.",
+      "photo": "",
+      "cv": ""
+    }
+  ],
+  "portfolio": [],
+  "partners": [
+    {"id":"parceiro-1","name":"Parceiro 01","logo":"","url":"#"},
+    {"id":"parceiro-2","name":"Parceiro 02","logo":"","url":"#"},
+    {"id":"parceiro-3","name":"Parceiro 03","logo":"","url":"#"}
+  ],
+  "links": [
+    {"id":"link-1","title":"Instagram","url":"#"},
+    {"id":"link-2","title":"Nosso Portfólio","url":"#"}
+  ]
+}

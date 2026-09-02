@@ -1,0 +1,19 @@
+{
+  "name": "multiservicos-portfolio",
+  "version": "2.0.0",
+  "description": "Portfólio multi-serviços com painel administrativo, Supabase e deploy gratuito no Render.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "engines": {
+    "node": ">=20 <25"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.57.0",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "multer": "^2.0.2"
+  }
+}

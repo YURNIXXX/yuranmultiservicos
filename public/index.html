@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Portfólio profissional multi-serviços." />
+  <title>MultiServiços | Portfólio</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <!-- MENU FIXO E MODERNO -->
+  <header class="site-header">
+    <a href="#inicio" class="brand"><span class="brand-mark">N</span><span id="brandName">Nexa MultiServiços</span></a>
+    <nav class="nav" id="nav">
+      <a href="#inicio">Início</a>
+      <a href="#servicos">Serviços</a>
+      <a href="#portfolio">Portfólio</a>
+      <a href="#sobre">Sobre nós</a>
+      <a href="#equipa">Equipa</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <div class="header-actions">
+      <button class="icon-btn" id="themeToggle" aria-label="Alternar tema">◐</button>
+      <button class="icon-btn mobile-only" id="menuToggle" aria-label="Abrir menu">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO / INÍCIO -->
+    <section class="hero" id="inicio">
+      <div class="hero-grid-bg"></div>
+      <div class="hero-content reveal">
+        <span class="eyebrow">PORTFÓLIO MULTI-SERVIÇOS</span>
+        <h1 id="heroTitle">Várias competências. Uma equipa. Soluções que funcionam.</h1>
+        <p id="heroText">Serviços profissionais reunidos num único portfólio.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#servicos">Explorar serviços</a>
+          <button class="btn ghost" data-open-request>Solicitar serviço</button>
+        </div>
+      </div>
+      <div class="hero-orbit reveal">
+        <div class="orbit-ring ring-one"></div>
+        <div class="orbit-ring ring-two"></div>
+        <div class="orbit-core">MS</div>
+        <span class="orb orb-1">⚡</span><span class="orb orb-2">✦</span><span class="orb orb-3">↗</span><span class="orb orb-4">🌿</span>
+      </div>
+    </section>
+
+    <!-- SERVIÇOS -->
+    <section class="section" id="servicos">
+      <div class="section-heading reveal"><span class="eyebrow">O QUE FAZEMOS</span><h2>Serviços para diferentes necessidades</h2><p>Escolha uma área para ver trabalhos relacionados ou solicitar atendimento.</p></div>
+      <div class="services-grid" id="servicesGrid"></div>
+    </section>
+
+    <!-- PORTFÓLIO -->
+    <section class="section alt" id="portfolio">
+      <div class="section-heading reveal"><span class="eyebrow">TRABALHOS</span><h2>Portfólio por serviço</h2></div>
+      <div class="filter-row" id="portfolioFilters"></div>
+      <div class="portfolio-grid" id="portfolioGrid"></div>
+    </section>
+
+    <!-- SOBRE NÓS -->
+    <section class="section split" id="sobre">
+      <div class="section-heading reveal"><span class="eyebrow">SOBRE NÓS</span><h2>Uma estrutura flexível para uma equipa multidisciplinar</h2></div>
+      <div class="glass-panel reveal"><p id="aboutText"></p></div>
+    </section>
+
+    <!-- EQUIPA -->
+    <section class="section" id="equipa">
+      <div class="section-heading reveal"><span class="eyebrow">EQUIPA</span><h2>Conheça os profissionais</h2><p>Perfis, especialidades e CVs disponíveis diretamente no site.</p></div>
+      <div class="team-grid" id="teamGrid"></div>
+    </section>
+
+    <!-- PARCEIROS -->
+    <section class="partners-section">
+      <span class="eyebrow">PARCEIROS E MARCAS</span>
+      <div class="marquee"><div class="marquee-track" id="partnersTrack"></div></div>
+    </section>
+
+    <!-- LINKS / REDES / PORTFÓLIOS EXTERNOS -->
+    <section class="section compact">
+      <div class="section-heading reveal"><span class="eyebrow">LIGAÇÕES</span><h2>Redes, páginas e portfólios</h2></div>
+      <div class="link-cards" id="linksGrid"></div>
+    </section>
+
+    <!-- CONTACTOS -->
+    <section class="section contact-section" id="contacto">
+      <div class="contact-info reveal">
+        <span class="eyebrow">CONTACTO</span><h2>Fale connosco</h2>
+        <div class="contact-list" id="contactList"></div>
+      </div>
+      <form class="contact-form reveal" id="contactForm">
+        <input required name="nome" placeholder="Seu nome" />
+        <input required name="telefone" placeholder="Telefone / WhatsApp" />
+        <select required name="servico" id="contactService"><option value="">Selecione o serviço</option></select>
+        <textarea required name="mensagem" rows="5" placeholder="Explique brevemente o que precisa"></textarea>
+        <button class="btn primary" type="submit">Enviar pelo WhatsApp</button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div><strong id="footerName">Nexa MultiServiços</strong><p>Soluções profissionais em várias áreas.</p></div>
+    <div id="socialLinks"></div>
+    <small>© <span id="year"></span> — Todos os direitos reservados.</small>
+  </footer>
+
+  <!-- BOTÃO FLUTUANTE -->
+  <button class="floating-request" data-open-request aria-label="Solicitar serviço"><span>☏</span><b>Solicitar</b></button>
+
+  <!-- MODAL DE PEDIDO RÁPIDO -->
+  <dialog class="request-modal" id="requestModal">
+    <form id="quickForm" class="modal-card">
+      <button type="button" class="modal-close" id="modalClose">×</button>
+      <span class="eyebrow">PEDIDO RÁPIDO</span><h3>Que serviço procura?</h3>
+      <input required name="nome" placeholder="Nome" />
+      <input required name="telefone" placeholder="Telefone / WhatsApp" />
+      <select required name="servico" id="quickService"><option value="">Selecione o serviço</option></select>
+      <textarea name="mensagem" rows="4" placeholder="Detalhes do pedido"></textarea>
+      <button class="btn primary" type="submit">Continuar no WhatsApp</button>
+    </form>
+  </dialog>
+
+  <!-- MODAL PARA ABRIR CV EM PDF SEM SAIR DO SITE -->
+  <dialog class="cv-modal" id="cvModal">
+    <div class="cv-shell">
+      <div class="cv-toolbar"><strong id="cvTitle">Currículo</strong><button class="modal-close" id="cvClose">×</button></div>
+      <iframe id="cvFrame" title="Currículo em PDF"></iframe>
+    </div>
+  </dialog>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>
