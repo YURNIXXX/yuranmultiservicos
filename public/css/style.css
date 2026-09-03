@@ -31,3 +31,10 @@
 .nav a:hover{color:var(--nav-hover);transform:translateY(-1px)}
 @media(max-width:900px){.hero-logo-stage{min-height:310px}.hero-logo-stage:before{width:min(65vw,420px)}.hero-logo-stage:after{width:min(48vw,300px)}.hero-main-logo{max-width:min(62vw,390px);max-height:250px}.footer{grid-template-columns:1fr auto}}
 @media(max-width:600px){.hero-logo-stage{min-height:230px}.hero-main-logo{max-width:72vw;max-height:190px}.hero-logo-stage:before{width:72vw}.hero-logo-stage:after{width:52vw}.portfolio-info{min-height:200px}.footer{grid-template-columns:1fr}.footer #socialLinks{justify-content:flex-start}}
+
+/* Correções V4: logo no menu e botão do portfólio sempre acima da imagem */
+.brand-mark[hidden], .brand-logo[hidden], .hero-main-logo[hidden] { display: none !important; }
+.portfolio-card { position: relative; isolation: isolate; }
+.portfolio-media-wrap { position: relative; z-index: 1; overflow: hidden; }
+.portfolio-info { position: relative; z-index: 3; background: var(--surface); }
+.project-view-btn { position: relative; z-index: 5; pointer-events: auto; }
