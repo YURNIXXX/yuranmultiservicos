@@ -1,138 +1,22 @@
-// ============================================================
-// JAVASCRIPT PRINCIPAL DO SITE
-// Carrega conteúdo da API e constrói o site dinamicamente.
-// ============================================================
-
-let siteData = null;
-
-const $ = (selector, root = document) => root.querySelector(selector);
-const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
-
-async function loadSite() {
-  const res = await fetch('/api/site');
-  siteData = await res.json();
-  renderSettings();
-  renderServices();
-  renderPortfolio();
-  renderTeam();
-  renderPartners();
-  renderLinks();
-  setupReveal();
-}
-
-function renderSettings() {
-  const s = siteData.settings;
-  $('#brandName').textContent = s.siteName;
-  $('#footerName').textContent = s.siteName;
-  $('#heroTitle').textContent = s.heroTitle;
-  $('#heroText').textContent = s.heroText;
-  $('#aboutText').textContent = s.about;
-  $('#contactList').innerHTML = `
-    <div><strong>Telefone</strong><br>${s.phone}</div>
-    <div><strong>E-mail</strong><br>${s.email}</div>
-    <div><strong>Localização</strong><br>${s.location}</div>`;
-  $('#socialLinks').innerHTML = [
-    ['Instagram', s.instagram], ['Facebook', s.facebook], ['LinkedIn', s.linkedin]
-  ].filter(([,url]) => url).map(([name,url]) => `<a href="${url}" target="_blank" rel="noopener">${name} ↗</a>`).join('');
-}
-
-function renderServices() {
-  const grid = $('#servicesGrid');
-  grid.innerHTML = siteData.services.map(service => `
-    <article class="service-card reveal" data-service="${service.id}">
-      <button class="service-action" aria-label="Solicitar ${service.title}" data-service-request="${service.title}">↗</button>
-      <div class="service-accent" style="background:${service.color}"></div>
-      <div class="service-icon">${service.icon || '•'}</div>
-      <h3>${service.title}</h3>
-      <p>${service.description}</p>
-    </article>`).join('');
-
-  const options = siteData.services.map(s => `<option value="${s.title}">${s.title}</option>`).join('');
-  $('#contactService').insertAdjacentHTML('beforeend', options);
-  $('#quickService').insertAdjacentHTML('beforeend', options);
-
-  $$('[data-service-request]').forEach(btn => btn.addEventListener('click', () => openRequest(btn.dataset.serviceRequest)));
-}
-
-function renderPortfolio(filter = 'Todos') {
-  const filters = ['Todos', ...new Set(siteData.services.map(s => s.title))];
-  $('#portfolioFilters').innerHTML = filters.map(name => `<button class="filter-btn ${filter === name ? 'active' : ''}" data-filter="${name}">${name}</button>`).join('');
-  $$('.filter-btn').forEach(btn => btn.onclick = () => renderPortfolio(btn.dataset.filter));
-
-  const items = filter === 'Todos' ? siteData.portfolio : siteData.portfolio.filter(p => p.service === filter);
-  $('#portfolioGrid').innerHTML = items.length ? items.map(item => `
-    <article class="portfolio-card reveal">
-      ${item.image ? `<img class="portfolio-media" src="${item.image}" alt="${item.title}">` : `<div class="portfolio-media"></div>`}
-      <div class="portfolio-info">
-        <span class="eyebrow">${item.service || 'PROJETO'}</span>
-        <h3>${item.title}</h3><p>${item.description || ''}</p>
-        ${item.link ? `<a href="${item.link}" target="_blank" rel="noopener"><strong>Ver projeto ↗</strong></a>` : ''}
-      </div>
-    </article>`).join('') : `<div class="empty-state">Ainda não há trabalhos publicados nesta categoria. Adicione-os no painel administrativo.</div>`;
-  setupReveal();
-}
-
-function renderTeam() {
-  $('#teamGrid').innerHTML = siteData.team.map(member => `
-    <article class="team-card reveal">
-      ${member.photo ? `<img class="team-photo" src="${member.photo}" alt="${member.name}">` : `<div class="team-photo team-placeholder">◉</div>`}
-      <div class="team-body">
-        <h3>${member.name}</h3><div class="team-role">${member.role}</div><p>${member.bio}</p>
-        ${member.cv ? `<button class="btn ghost" data-cv="${member.cv}" data-name="${member.name}">Ver currículo</button>` : `<button class="btn ghost" disabled>CV ainda não publicado</button>`}
-      </div>
-    </article>`).join('');
-
-  $$('[data-cv]').forEach(btn => btn.onclick = () => {
-    $('#cvTitle').textContent = `CV — ${btn.dataset.name}`;
-    $('#cvFrame').src = btn.dataset.cv;
-    $('#cvModal').showModal();
-  });
-}
-
-function renderPartners() {
-  const items = siteData.partners.map(p => `<a class="partner-chip" href="${p.url || '#'}" ${p.url && p.url !== '#' ? 'target="_blank" rel="noopener"' : ''}>${p.logo ? `<img src="${p.logo}" alt="${p.name}">` : p.name}</a>`).join('');
-  $('#partnersTrack').innerHTML = items + items; // Duplica para criar loop contínuo.
-}
-
-function renderLinks() {
-  $('#linksGrid').innerHTML = siteData.links.map(l => `<a class="link-card reveal" href="${l.url}" target="_blank" rel="noopener"><span>${l.title}</span><span>↗</span></a>`).join('');
-}
-
-function setupReveal() {
-  const io = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }), { threshold: .08 });
-  $$('.reveal').forEach(el => io.observe(el));
-}
-
-// ---------- Tema claro / escuro ----------
-const savedTheme = localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-document.documentElement.dataset.theme = savedTheme;
-$('#themeToggle').onclick = () => {
-  const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-  document.documentElement.dataset.theme = next;
-  localStorage.setItem('theme', next);
-};
-
-// ---------- Menu mobile ----------
-$('#menuToggle').onclick = () => $('#nav').classList.toggle('open');
-$$('#nav a').forEach(a => a.onclick = () => $('#nav').classList.remove('open'));
-
-// ---------- Formulários para WhatsApp ----------
-function openWhatsApp(values) {
-  const s = siteData.settings;
-  const text = `Olá! Gostaria de solicitar um serviço.%0A%0A*Nome:* ${encodeURIComponent(values.nome)}%0A*Telefone:* ${encodeURIComponent(values.telefone)}%0A*Serviço:* ${encodeURIComponent(values.servico)}%0A*Detalhes:* ${encodeURIComponent(values.mensagem || '')}`;
-  window.open(`https://wa.me/${String(s.whatsapp).replace(/\D/g,'')}?text=${text}`, '_blank', 'noopener');
-}
-
-function openRequest(service = '') {
-  $('#quickService').value = service;
-  $('#requestModal').showModal();
-}
-$$('[data-open-request]').forEach(btn => btn.onclick = () => openRequest());
-$('#modalClose').onclick = () => $('#requestModal').close();
-$('#cvClose').onclick = () => { $('#cvModal').close(); $('#cvFrame').src = ''; };
-
-$('#contactForm').onsubmit = e => { e.preventDefault(); openWhatsApp(Object.fromEntries(new FormData(e.currentTarget))); };
-$('#quickForm').onsubmit = e => { e.preventDefault(); openWhatsApp(Object.fromEntries(new FormData(e.currentTarget))); };
-
-$('#year').textContent = new Date().getFullYear();
-loadSite();
+let siteData=null, currentProject=null, galleryIndex=0;
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+function normalizeUrl(v=''){v=String(v).trim();if(!v||v==='#')return '#';if(/^https?:\/\//i.test(v))return v;if(/^\/\//.test(v))return `https:${v}`;return `https://${v.replace(/^\/+/, '')}`;}
+function iconMarkup(s){return s.iconImage?`<img src="${esc(s.iconImage)}" alt="">`:`<i class="bi ${esc(s.iconClass||'bi-briefcase')}"></i>`;}
+async function loadSite(){const res=await fetch('/api/site');siteData=await res.json();renderSettings();renderServices();renderPortfolio();renderTeam();renderPartners();renderLinks();setupReveal();}
+function renderSettings(){const s=siteData.settings||{};document.documentElement.style.setProperty('--primary-custom',s.primaryColor||'#151a16');document.documentElement.style.setProperty('--nav-hover',s.navHoverColor||'#00a884');$('#brandName').textContent=s.siteName||'MultiServiços';$('#footerName').textContent=s.siteName||'MultiServiços';$('#heroTitle').textContent=s.heroTitle||'';$('#heroText').textContent=s.heroText||'';$('#aboutText').textContent=s.about||'';document.title=`${s.siteName||'MultiServiços'} | Portfólio`;if(s.logo){$('#brandLogo').src=s.logo;$('#brandLogo').hidden=false;$('#brandMark').hidden=true;}if(s.favicon)$('#faviconLink').href=s.favicon;$('#contactList').innerHTML=`<div><strong>Telefone</strong><br>${esc(s.phone||'')}</div><div><strong>E-mail</strong><br>${esc(s.email||'')}</div><div><strong>Localização</strong><br>${esc(s.location||'')}</div>`;$('#socialLinks').innerHTML=[['Instagram',s.instagram],['Facebook',s.facebook],['LinkedIn',s.linkedin]].filter(([,u])=>u&&u!=='#').map(([n,u])=>`<a href="${esc(normalizeUrl(u))}" target="_blank" rel="noopener">${n} <i class="bi bi-box-arrow-up-right"></i></a>`).join('');}
+function renderServices(){const grid=$('#servicesGrid');grid.innerHTML=siteData.services.map(s=>`<article class="service-card reveal" style="--service-color:${esc(s.color||'#00a884')}"><div class="service-accent"></div><div class="service-icon">${iconMarkup(s)}</div><h3>${esc(s.title)}</h3><p>${esc(s.description||'')}</p><a class="service-page-btn" href="/servico/${encodeURIComponent(s.id)}">Ver serviço <i class="bi bi-arrow-right"></i></a></article>`).join('');const opts=siteData.services.map(s=>`<option value="${esc(s.title)}">${esc(s.title)}</option>`).join('');$('#contactService').innerHTML='<option value="">Selecione o serviço</option>'+opts;$('#quickService').innerHTML='<option value="">Selecione o serviço</option>'+opts;}
+function projectImages(p){return p.images?.length?p.images:(p.image?[p.image]:[]);}
+function renderPortfolio(filter='Todos'){const filters=['Todos',...new Set(siteData.services.map(s=>s.title))];$('#portfolioFilters').innerHTML=filters.map(n=>`<button class="filter-btn ${filter===n?'active':''}" data-filter="${esc(n)}">${esc(n)}</button>`).join('');$$('.filter-btn').forEach(b=>b.onclick=()=>renderPortfolio(b.dataset.filter));const items=filter==='Todos'?siteData.portfolio:siteData.portfolio.filter(p=>p.service===filter);$('#portfolioGrid').innerHTML=items.length?items.map(p=>{const imgs=projectImages(p);return`<article class="portfolio-card reveal" data-project="${esc(p.id)}" tabindex="0">${imgs[0]?`<div class="portfolio-media-wrap"><img class="portfolio-media" src="${esc(imgs[0])}" alt="${esc(p.title)}">${imgs.length>1?`<span class="image-badge"><i class="bi bi-images"></i> ${imgs.length}</span>`:''}</div>`:`<div class="portfolio-media"></div>`}<div class="portfolio-info"><span class="eyebrow">${esc(p.service||'PROJETO')}</span><h3>${esc(p.title)}</h3><p class="portfolio-excerpt">${esc(p.description||'')}</p><span class="open-project">Ver detalhes <i class="bi bi-arrows-angle-expand"></i></span></div></article>`}).join(''):`<div class="empty-state">Ainda não há trabalhos publicados nesta categoria.</div>`;$$('[data-project]').forEach(c=>{c.onclick=()=>openProject(c.dataset.project);c.onkeydown=e=>{if(e.key==='Enter')openProject(c.dataset.project)}});setupReveal();}
+function openProject(id){currentProject=siteData.portfolio.find(p=>p.id===id);if(!currentProject)return;galleryIndex=0;$('#modalService').textContent=currentProject.service||'PROJETO';$('#modalProjectTitle').textContent=currentProject.title||'';$('#modalProjectDescription').textContent=currentProject.description||'';const l=$('#modalProjectLink');if(currentProject.link&&currentProject.link!=='#'){l.href=normalizeUrl(currentProject.link);l.hidden=false}else l.hidden=true;updateGallery();$('#portfolioModal').showModal();}
+function updateGallery(){const imgs=projectImages(currentProject||{});const img=$('#galleryImage');if(!imgs.length){img.removeAttribute('src');img.alt='Sem imagem';$('#galleryCount').textContent='';$('#galleryPrev').hidden=$('#galleryNext').hidden=true;return;}img.src=imgs[galleryIndex];img.alt=`${currentProject.title} — imagem ${galleryIndex+1}`;$('#galleryCount').textContent=`${galleryIndex+1} / ${imgs.length}`;$('#galleryPrev').hidden=$('#galleryNext').hidden=imgs.length<2;}
+function moveGallery(d){const imgs=projectImages(currentProject||{});if(!imgs.length)return;galleryIndex=(galleryIndex+d+imgs.length)%imgs.length;updateGallery();}
+$('#galleryPrev').onclick=()=>moveGallery(-1);$('#galleryNext').onclick=()=>moveGallery(1);$('#portfolioClose').onclick=()=>$('#portfolioModal').close();
+document.addEventListener('keydown',e=>{if($('#portfolioModal').open){if(e.key==='ArrowLeft')moveGallery(-1);if(e.key==='ArrowRight')moveGallery(1)}});
+function renderTeam(){$('#teamGrid').innerHTML=siteData.team.map(m=>`<article class="team-card reveal">${m.photo?`<img class="team-photo" src="${esc(m.photo)}" alt="${esc(m.name)}">`:`<div class="team-photo team-placeholder"><i class="bi bi-person"></i></div>`}<div class="team-body"><h3>${esc(m.name)}</h3><div class="team-role">${esc(m.role)}</div><p>${esc(m.bio||'')}</p>${m.cv?`<button class="btn ghost" data-cv="${esc(m.cv)}" data-name="${esc(m.name)}">Ver currículo</button>`:`<button class="btn ghost" disabled>CV ainda não publicado</button>`}</div></article>`).join('');$$('[data-cv]').forEach(b=>b.onclick=()=>{$('#cvTitle').textContent=`CV — ${b.dataset.name}`;$('#cvFrame').src=b.dataset.cv;$('#cvModal').showModal();});}
+function renderPartners(){const items=siteData.partners.map(p=>{const u=normalizeUrl(p.url||'#');return`<a class="partner-chip" href="${esc(u)}" ${u!=='#'?'target="_blank" rel="noopener"':''}>${p.logo?`<img src="${esc(p.logo)}" alt="${esc(p.name)}">`:esc(p.name)}</a>`}).join('');$('#partnersTrack').innerHTML=items+items;}
+function renderLinks(){$('#linksGrid').innerHTML=siteData.links.map(l=>`<a class="link-card reveal" href="${esc(normalizeUrl(l.url))}" target="_blank" rel="noopener"><span>${esc(l.title)}</span><i class="bi bi-box-arrow-up-right"></i></a>`).join('');}
+function setupReveal(){const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.08});$$('.reveal').forEach(el=>io.observe(el));}
+const savedTheme=localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.dataset.theme=savedTheme;$('#themeToggle').onclick=()=>{const n=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=n;localStorage.setItem('theme',n)};$('#menuToggle').onclick=()=>$('#nav').classList.toggle('open');$$('#nav a').forEach(a=>a.onclick=()=>$('#nav').classList.remove('open'));
+function openWhatsApp(v){const s=siteData.settings;const text=`Olá! Gostaria de solicitar um serviço.%0A%0A*Nome:* ${encodeURIComponent(v.nome)}%0A*Telefone:* ${encodeURIComponent(v.telefone)}%0A*Serviço:* ${encodeURIComponent(v.servico)}%0A*Detalhes:* ${encodeURIComponent(v.mensagem||'')}`;window.open(`https://wa.me/${String(s.whatsapp).replace(/\D/g,'')}?text=${text}`,'_blank','noopener');}
+function openRequest(service=''){$('#quickService').value=service;$('#requestModal').showModal();}$$('[data-open-request]').forEach(b=>b.onclick=()=>openRequest());$('#modalClose').onclick=()=>$('#requestModal').close();$('#cvClose').onclick=()=>{$('#cvModal').close();$('#cvFrame').src=''};$('#contactForm').onsubmit=e=>{e.preventDefault();openWhatsApp(Object.fromEntries(new FormData(e.currentTarget)))};$('#quickForm').onsubmit=e=>{e.preventDefault();openWhatsApp(Object.fromEntries(new FormData(e.currentTarget)))};$('#year').textContent=new Date().getFullYear();loadSite();

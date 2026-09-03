@@ -1,16 +1,3 @@
-// ============================================================
-// SERVIDOR DO SITE MULTI-SERVIÇOS
-//
-// Produção no Render:
-// - Render executa o Node/Express.
-// - Supabase guarda os dados do site (PostgreSQL).
-// - Supabase Storage guarda imagens e CVs.
-//
-// Se as variáveis SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY não
-// existirem, o projeto continua funcionando localmente usando
-// os arquivos da pasta /data e /public/uploads.
-// ============================================================
-
 const express = require('express');
 const session = require('express-session');
 const multer = require('multer');
@@ -45,88 +32,84 @@ app.use(session({
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/admin', express.static(path.join(__dirname, 'admin')));
 
-function readLocalData() {
-  return JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
-}
-function writeLocalData(data) {
-  fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), 'utf8');
-}
-function uid(prefix = 'item') {
-  return `${prefix}-${Date.now()}-${crypto.randomBytes(3).toString('hex')}`;
-}
-function requireAuth(req, res, next) {
-  if (!req.session.admin) return res.status(401).json({ error: 'Não autenticado.' });
-  next();
+function readLocalData() { return JSON.parse(fs.readFileSync(DATA_FILE, 'utf8')); }
+function writeLocalData(data) { fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), 'utf8'); }
+function uid(prefix = 'item') { return `${prefix}-${Date.now()}-${crypto.randomBytes(3).toString('hex')}`; }
+function requireAuth(req, res, next) { if (!req.session.admin) return res.status(401).json({ error: 'Não autenticado.' }); next(); }
+function slugify(value = '') { return String(value).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || uid('servico'); }
+function normalizeUrl(value = '') {
+  const v = String(value).trim();
+  if (!v || v === '#') return v || '#';
+  if (/^(https?:)?\/\//i.test(v)) return v.startsWith('//') ? `https:${v}` : v;
+  return `https://${v.replace(/^\/+/, '')}`;
 }
 
-// ============================================================
-// BANCO DE DADOS
-// ============================================================
+function normalizeContent(content) {
+  content.settings ||= {};
+  content.settings.primaryColor ||= '#151a16';
+  content.settings.navHoverColor ||= '#00a884';
+  content.settings.logo ||= '';
+  content.settings.favicon ||= '';
+  const presets = {
+    'eletricidade': { iconClass: 'bi-lightning-charge', oldColor: '#F28C28', color: '#F28C28' },
+    'design-grafico': { iconClass: 'bi-palette', oldColor: '#708D75', color: '#00C9A7' },
+    'marketing': { iconClass: 'bi-megaphone', oldColor: '#476C9B', color: '#00C9A7' },
+    'agropecuaria': { iconClass: 'bi-flower1', oldColor: '#77966D', color: '#2E8B57' }
+  };
+  content.services = (content.services || []).map(s => {
+    const preset = presets[s.id] || {};
+    const next = { ...s };
+    if (!next.iconClass) next.iconClass = preset.iconClass || 'bi-briefcase';
+    if (preset.oldColor && String(next.color).toUpperCase() === preset.oldColor.toUpperCase()) next.color = preset.color;
+    next.iconImage ||= '';
+    next.banner ||= '';
+    next.details ||= next.description || '';
+    return next;
+  });
+  content.portfolio = (content.portfolio || []).map(p => ({ ...p, images: p.images?.length ? p.images : (p.image ? [p.image] : []) }));
+  content.partners ||= []; content.links ||= []; content.team ||= [];
+  return content;
+}
+
 async function readData() {
-  if (!USE_SUPABASE) return readLocalData();
-
-  const { data, error } = await supabase
-    .from('site_content')
-    .select('content')
-    .eq('id', 'main')
-    .maybeSingle();
-
+  if (!USE_SUPABASE) return normalizeContent(readLocalData());
+  const { data, error } = await supabase.from('site_content').select('content').eq('id', 'main').maybeSingle();
   if (error) throw error;
-
-  // Na primeira execução, importa o conteúdo inicial do JSON.
   if (!data) {
     const initial = readLocalData();
     const { error: insertError } = await supabase.from('site_content').insert({ id: 'main', content: initial });
     if (insertError) throw insertError;
-    return initial;
+    return normalizeContent(initial);
   }
-  return data.content;
+  return normalizeContent(data.content);
 }
 
 async function writeData(content) {
-  if (!USE_SUPABASE) {
-    writeLocalData(content);
-    return;
-  }
-  const { error } = await supabase
-    .from('site_content')
-    .upsert({ id: 'main', content, updated_at: new Date().toISOString() });
+  if (!USE_SUPABASE) return writeLocalData(content);
+  const { error } = await supabase.from('site_content').upsert({ id: 'main', content, updated_at: new Date().toISOString() });
   if (error) throw error;
 }
 
-// ============================================================
-// ARMAZENAMENTO DE ARQUIVOS
-// ============================================================
 const imageUpload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 8 * 1024 * 1024 },
+  limits: { fileSize: 8 * 1024 * 1024, files: 16 },
   fileFilter: (_, file, cb) => cb(null, file.mimetype.startsWith('image/'))
 });
 const cvUpload = multer({
-  storage: multer.memoryStorage(),
-  limits: { fileSize: 12 * 1024 * 1024 },
+  storage: multer.memoryStorage(), limits: { fileSize: 12 * 1024 * 1024 },
   fileFilter: (_, file, cb) => cb(null, file.mimetype === 'application/pdf')
 });
-
-function safeName(name) {
-  return name.replace(/[^a-zA-Z0-9._-]/g, '-');
-}
+function safeName(name) { return name.replace(/[^a-zA-Z0-9._-]/g, '-'); }
 
 async function saveUpload(file, folder) {
   if (!file) return '';
   const filename = `${Date.now()}-${crypto.randomBytes(4).toString('hex')}-${safeName(file.originalname)}`;
-
   if (USE_SUPABASE) {
     const storagePath = `${folder}/${filename}`;
-    const { error } = await supabase.storage.from(STORAGE_BUCKET).upload(storagePath, file.buffer, {
-      contentType: file.mimetype,
-      upsert: false
-    });
+    const { error } = await supabase.storage.from(STORAGE_BUCKET).upload(storagePath, file.buffer, { contentType: file.mimetype, upsert: false });
     if (error) throw error;
-    const { data } = supabase.storage.from(STORAGE_BUCKET).getPublicUrl(storagePath);
-    return data.publicUrl;
+    return supabase.storage.from(STORAGE_BUCKET).getPublicUrl(storagePath).data.publicUrl;
   }
-
   const dir = folder === 'cvs' ? CV_DIR : IMAGE_DIR;
   fs.writeFileSync(path.join(dir, filename), file.buffer);
   return `/uploads/${folder}/${filename}`;
@@ -137,10 +120,7 @@ async function deleteUpload(url) {
   if (USE_SUPABASE) {
     const marker = `/storage/v1/object/public/${STORAGE_BUCKET}/`;
     const index = url.indexOf(marker);
-    if (index >= 0) {
-      const objectPath = decodeURIComponent(url.slice(index + marker.length));
-      await supabase.storage.from(STORAGE_BUCKET).remove([objectPath]);
-    }
+    if (index >= 0) await supabase.storage.from(STORAGE_BUCKET).remove([decodeURIComponent(url.slice(index + marker.length))]);
     return;
   }
   if (url.startsWith('/uploads/')) {
@@ -149,173 +129,171 @@ async function deleteUpload(url) {
   }
 }
 
-// ============================================================
-// API PÚBLICA
-// ============================================================
-app.get('/api/site', async (req, res) => {
+app.get('/api/site', async (_, res) => {
   try { res.json(await readData()); }
   catch (error) { console.error(error); res.status(500).json({ error: 'Não foi possível carregar os dados.' }); }
 });
 
-// ============================================================
-// AUTENTICAÇÃO
-// ============================================================
+app.get('/servico/:id', (_, res) => res.sendFile(path.join(__dirname, 'public', 'service.html')));
+
 app.post('/api/admin/login', (req, res) => {
-  const { password } = req.body;
-  if (password === ADMIN_PASSWORD) {
-    req.session.admin = true;
-    return res.json({ ok: true });
-  }
+  if (req.body.password === ADMIN_PASSWORD) { req.session.admin = true; return res.json({ ok: true }); }
   res.status(401).json({ error: 'Senha incorreta.' });
 });
 app.post('/api/admin/logout', requireAuth, (req, res) => req.session.destroy(() => res.json({ ok: true })));
 app.get('/api/admin/session', (req, res) => res.json({ authenticated: !!req.session.admin }));
 
-// ============================================================
-// CONFIGURAÇÕES
-// ============================================================
 app.put('/api/admin/settings', requireAuth, async (req, res) => {
   try {
     const data = await readData();
     data.settings = { ...data.settings, ...req.body };
-    await writeData(data);
-    res.json(data.settings);
+    await writeData(data); res.json(data.settings);
   } catch (error) { console.error(error); res.status(500).json({ error: 'Erro ao guardar configurações.' }); }
 });
 
-// ============================================================
-// COLEÇÕES SIMPLES
-// ============================================================
-const allowedCollections = ['services', 'partners', 'links'];
-allowedCollections.forEach(collection => {
+app.post('/api/admin/settings/assets', requireAuth, imageUpload.fields([{ name: 'logo', maxCount: 1 }, { name: 'favicon', maxCount: 1 }]), async (req, res) => {
+  try {
+    const data = await readData();
+    data.settings ||= {};
+    if (req.files?.logo?.[0]) {
+      if (data.settings.logo) await deleteUpload(data.settings.logo);
+      data.settings.logo = await saveUpload(req.files.logo[0], 'images');
+    }
+    if (req.files?.favicon?.[0]) {
+      if (data.settings.favicon) await deleteUpload(data.settings.favicon);
+      data.settings.favicon = await saveUpload(req.files.favicon[0], 'images');
+    }
+    await writeData(data); res.json(data.settings);
+  } catch (error) { console.error(error); res.status(500).json({ error: 'Erro ao guardar identidade visual.' }); }
+});
+
+// SERVIÇOS: cor, ícone Bootstrap/personalizado, banner e página própria.
+app.post('/api/admin/services', requireAuth, imageUpload.fields([{ name: 'iconImage', maxCount: 1 }, { name: 'banner', maxCount: 1 }]), async (req, res) => {
+  try {
+    const data = await readData();
+    const baseId = slugify(req.body.title);
+    let id = baseId; let n = 2;
+    while (data.services.some(s => s.id === id)) id = `${baseId}-${n++}`;
+    const item = {
+      id,
+      title: req.body.title || 'Serviço',
+      iconClass: req.body.iconClass || 'bi-briefcase',
+      iconImage: req.files?.iconImage?.[0] ? await saveUpload(req.files.iconImage[0], 'images') : '',
+      color: req.body.color || '#00A884',
+      description: req.body.description || '',
+      details: req.body.details || req.body.description || '',
+      banner: req.files?.banner?.[0] ? await saveUpload(req.files.banner[0], 'images') : '',
+      featured: true
+    };
+    data.services.push(item); await writeData(data); res.json(item);
+  } catch (error) { console.error(error); res.status(500).json({ error: 'Erro ao adicionar serviço.' }); }
+});
+
+app.put('/api/admin/services/:id', requireAuth, imageUpload.fields([{ name: 'iconImage', maxCount: 1 }, { name: 'banner', maxCount: 1 }]), async (req, res) => {
+  try {
+    const data = await readData();
+    const index = data.services.findIndex(s => s.id === req.params.id);
+    if (index < 0) return res.status(404).json({ error: 'Serviço não encontrado.' });
+    const old = data.services[index];
+    let iconImage = old.iconImage || '';
+    let banner = old.banner || '';
+    if (req.files?.iconImage?.[0]) { if (iconImage) await deleteUpload(iconImage); iconImage = await saveUpload(req.files.iconImage[0], 'images'); }
+    if (req.files?.banner?.[0]) { if (banner) await deleteUpload(banner); banner = await saveUpload(req.files.banner[0], 'images'); }
+    data.services[index] = {
+      ...old,
+      title: req.body.title ?? old.title,
+      iconClass: req.body.iconClass ?? old.iconClass ?? 'bi-briefcase',
+      color: req.body.color ?? old.color,
+      description: req.body.description ?? old.description,
+      details: req.body.details ?? old.details ?? old.description,
+      iconImage, banner
+    };
+    await writeData(data); res.json(data.services[index]);
+  } catch (error) { console.error(error); res.status(500).json({ error: 'Erro ao atualizar serviço.' }); }
+});
+
+app.delete('/api/admin/services/:id', requireAuth, async (req, res) => {
+  try {
+    const data = await readData();
+    const item = data.services.find(s => s.id === req.params.id);
+    if (item?.iconImage) await deleteUpload(item.iconImage);
+    if (item?.banner) await deleteUpload(item.banner);
+    data.services = data.services.filter(s => s.id !== req.params.id);
+    await writeData(data); res.json({ ok: true });
+  } catch (error) { console.error(error); res.status(500).json({ error: 'Erro ao remover serviço.' }); }
+});
+
+// LINKS simples.
+['links'].forEach(collection => {
   app.post(`/api/admin/${collection}`, requireAuth, async (req, res) => {
-    try {
-      const data = await readData();
-      const item = { id: uid(collection.slice(0, -1)), ...req.body };
-      data[collection].push(item);
-      await writeData(data);
-      res.json(item);
-    } catch (error) { console.error(error); res.status(500).json({ error: 'Erro ao adicionar item.' }); }
+    try { const data = await readData(); const item = { id: uid('link'), ...req.body }; data[collection].push(item); await writeData(data); res.json(item); }
+    catch (error) { console.error(error); res.status(500).json({ error: 'Erro ao adicionar item.' }); }
   });
-
-  app.put(`/api/admin/${collection}/:id`, requireAuth, async (req, res) => {
-    try {
-      const data = await readData();
-      const index = data[collection].findIndex(i => i.id === req.params.id);
-      if (index < 0) return res.status(404).json({ error: 'Item não encontrado.' });
-      data[collection][index] = { ...data[collection][index], ...req.body, id: req.params.id };
-      await writeData(data);
-      res.json(data[collection][index]);
-    } catch (error) { console.error(error); res.status(500).json({ error: 'Erro ao atualizar item.' }); }
-  });
-
   app.delete(`/api/admin/${collection}/:id`, requireAuth, async (req, res) => {
-    try {
-      const data = await readData();
-      data[collection] = data[collection].filter(i => i.id !== req.params.id);
-      await writeData(data);
-      res.json({ ok: true });
-    } catch (error) { console.error(error); res.status(500).json({ error: 'Erro ao remover item.' }); }
+    try { const data = await readData(); data[collection] = data[collection].filter(i => i.id !== req.params.id); await writeData(data); res.json({ ok: true }); }
+    catch (error) { console.error(error); res.status(500).json({ error: 'Erro ao remover item.' }); }
   });
 });
 
-// ============================================================
-// PORTFÓLIO
-// ============================================================
-app.post('/api/admin/portfolio', requireAuth, imageUpload.single('image'), async (req, res) => {
+// PARCEIROS: upload de logo + URL externa normalizada.
+app.post('/api/admin/partners', requireAuth, imageUpload.single('logo'), async (req, res) => {
   try {
     const data = await readData();
-    const image = req.file ? await saveUpload(req.file, 'images') : '';
-    const item = {
-      id: uid('portfolio'),
-      title: req.body.title || 'Projeto',
-      service: req.body.service || '',
-      description: req.body.description || '',
-      link: req.body.link || '',
-      image
-    };
-    data.portfolio.unshift(item);
-    await writeData(data);
-    res.json(item);
+    const item = { id: uid('partner'), name: req.body.name || 'Parceiro', logo: req.file ? await saveUpload(req.file, 'images') : '', url: normalizeUrl(req.body.url) };
+    data.partners.push(item); await writeData(data); res.json(item);
+  } catch (error) { console.error(error); res.status(500).json({ error: 'Erro ao adicionar parceiro.' }); }
+});
+app.delete('/api/admin/partners/:id', requireAuth, async (req, res) => {
+  try {
+    const data = await readData(); const item = data.partners.find(i => i.id === req.params.id);
+    if (item?.logo) await deleteUpload(item.logo);
+    data.partners = data.partners.filter(i => i.id !== req.params.id); await writeData(data); res.json({ ok: true });
+  } catch (error) { console.error(error); res.status(500).json({ error: 'Erro ao remover parceiro.' }); }
+});
+
+// PORTFÓLIO: múltiplas imagens por projeto.
+app.post('/api/admin/portfolio', requireAuth, imageUpload.array('images', 12), async (req, res) => {
+  try {
+    const data = await readData();
+    const images = [];
+    for (const file of req.files || []) images.push(await saveUpload(file, 'images'));
+    const item = { id: uid('portfolio'), title: req.body.title || 'Projeto', service: req.body.service || '', description: req.body.description || '', link: normalizeUrl(req.body.link || ''), images, image: images[0] || '' };
+    data.portfolio.unshift(item); await writeData(data); res.json(item);
   } catch (error) { console.error(error); res.status(500).json({ error: 'Erro ao publicar projeto.' }); }
 });
-
 app.delete('/api/admin/portfolio/:id', requireAuth, async (req, res) => {
   try {
-    const data = await readData();
-    const item = data.portfolio.find(i => i.id === req.params.id);
-    if (item?.image) await deleteUpload(item.image);
-    data.portfolio = data.portfolio.filter(i => i.id !== req.params.id);
-    await writeData(data);
-    res.json({ ok: true });
+    const data = await readData(); const item = data.portfolio.find(i => i.id === req.params.id);
+    const imgs = item?.images?.length ? item.images : (item?.image ? [item.image] : []);
+    for (const url of imgs) await deleteUpload(url);
+    data.portfolio = data.portfolio.filter(i => i.id !== req.params.id); await writeData(data); res.json({ ok: true });
   } catch (error) { console.error(error); res.status(500).json({ error: 'Erro ao remover projeto.' }); }
 });
 
-// ============================================================
-// EQUIPA + CV
-// ============================================================
+// EQUIPA + CV.
 app.post('/api/admin/team', requireAuth, imageUpload.single('photo'), async (req, res) => {
   try {
     const data = await readData();
-    const photo = req.file ? await saveUpload(req.file, 'images') : '';
-    const item = {
-      id: uid('team'), name: req.body.name || 'Profissional', role: req.body.role || '',
-      bio: req.body.bio || '', photo, cv: ''
-    };
-    data.team.push(item);
-    await writeData(data);
-    res.json(item);
+    const item = { id: uid('team'), name: req.body.name || 'Profissional', role: req.body.role || '', bio: req.body.bio || '', photo: req.file ? await saveUpload(req.file, 'images') : '', cv: '' };
+    data.team.push(item); await writeData(data); res.json(item);
   } catch (error) { console.error(error); res.status(500).json({ error: 'Erro ao adicionar profissional.' }); }
 });
-
-app.put('/api/admin/team/:id', requireAuth, imageUpload.single('photo'), async (req, res) => {
-  try {
-    const data = await readData();
-    const index = data.team.findIndex(i => i.id === req.params.id);
-    if (index < 0) return res.status(404).json({ error: 'Profissional não encontrado.' });
-    let photo = data.team[index].photo;
-    if (req.file) {
-      if (photo) await deleteUpload(photo);
-      photo = await saveUpload(req.file, 'images');
-    }
-    data.team[index] = {
-      ...data.team[index], name: req.body.name ?? data.team[index].name,
-      role: req.body.role ?? data.team[index].role, bio: req.body.bio ?? data.team[index].bio, photo
-    };
-    await writeData(data);
-    res.json(data.team[index]);
-  } catch (error) { console.error(error); res.status(500).json({ error: 'Erro ao atualizar profissional.' }); }
-});
-
 app.post('/api/admin/team/:id/cv', requireAuth, cvUpload.single('cv'), async (req, res) => {
   try {
-    const data = await readData();
-    const index = data.team.findIndex(i => i.id === req.params.id);
+    const data = await readData(); const index = data.team.findIndex(i => i.id === req.params.id);
     if (index < 0) return res.status(404).json({ error: 'Profissional não encontrado.' });
     if (!req.file) return res.status(400).json({ error: 'Envie um PDF.' });
     if (data.team[index].cv) await deleteUpload(data.team[index].cv);
-    data.team[index].cv = await saveUpload(req.file, 'cvs');
-    await writeData(data);
-    res.json(data.team[index]);
+    data.team[index].cv = await saveUpload(req.file, 'cvs'); await writeData(data); res.json(data.team[index]);
   } catch (error) { console.error(error); res.status(500).json({ error: 'Erro ao guardar CV.' }); }
 });
-
 app.delete('/api/admin/team/:id', requireAuth, async (req, res) => {
   try {
-    const data = await readData();
-    const item = data.team.find(i => i.id === req.params.id);
-    if (item?.photo) await deleteUpload(item.photo);
-    if (item?.cv) await deleteUpload(item.cv);
-    data.team = data.team.filter(i => i.id !== req.params.id);
-    await writeData(data);
-    res.json({ ok: true });
+    const data = await readData(); const item = data.team.find(i => i.id === req.params.id);
+    if (item?.photo) await deleteUpload(item.photo); if (item?.cv) await deleteUpload(item.cv);
+    data.team = data.team.filter(i => i.id !== req.params.id); await writeData(data); res.json({ ok: true });
   } catch (error) { console.error(error); res.status(500).json({ error: 'Erro ao remover profissional.' }); }
 });
 
-// Health check para o Render.
-app.get('/health', (req, res) => res.json({ ok: true, storage: USE_SUPABASE ? 'supabase' : 'local' }));
-
-app.listen(PORT, () => {
-  console.log(`Site disponível na porta ${PORT}`);
-  console.log(`Armazenamento: ${USE_SUPABASE ? 'Supabase (persistente)' : 'local (desenvolvimento)'}`);
-});
+app.get('/health', (_, res) => res.json({ ok: true, storage: USE_SUPABASE ? 'supabase' : 'local' }));
+app.listen(PORT, () => { console.log(`Site disponível na porta ${PORT}`); console.log(`Armazenamento: ${USE_SUPABASE ? 'Supabase (persistente)' : 'local (desenvolvimento)'}`); });
