@@ -1,6 +1,6 @@
 {
   "settings": {
-    "siteName": "Nexa MultiServiços",
+    "siteName": "Yuran Multicerviços",
     "tagline": "Soluções técnicas, criativas e profissionais num só lugar.",
     "heroTitle": "Várias competências. Uma equipa. Soluções que funcionam.",
     "heroText": "Eletricidade, Design Gráfico, Marketing, Agropecuária e outros serviços profissionais reunidos num único portfólio.",
@@ -9,13 +9,11 @@
     "email": "contacto@seudominio.co.mz",
     "location": "Maputo, Moçambique",
     "about": "Este é um texto editável sobre a empresa. Use o painel administrativo para substituir esta informação pela história, missão, visão, valores e apresentação da sua equipa.",
-    "instagram": "#",
-    "facebook": "#",
-    "linkedin": "#",
     "primaryColor": "#151a16",
-    "navHoverColor": "#00A884",
+    "navHoverColor": "#00C9A7",
     "logo": "",
-    "favicon": ""
+    "favicon": "",
+    "heroColor": "#00C9A7"
   },
   "services": [
     {
@@ -128,12 +126,15 @@
     {
       "id": "link-1",
       "title": "Instagram",
-      "url": "#"
+      "url": "#",
+      "iconClass": "bi-link-45deg"
     },
     {
       "id": "link-2",
       "title": "Nosso Portfólio",
-      "url": "#"
+      "url": "#",
+      "iconClass": "bi-link-45deg"
     }
-  ]
+  ],
+  "socials": []
 }

@@ -1,5 +1,5 @@
 {
-  "name": "multiservicos-portfolio",
+  "name": "yuranmultiservicos",
   "version": "2.0.0",
   "description": "Portfólio multi-serviços com painel administrativo, Supabase e deploy gratuito no Render.",
   "main": "server.js",

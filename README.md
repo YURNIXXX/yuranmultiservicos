@@ -1,4 +1,4 @@
-# MultiServiços — versão Render + Supabase
+# Yuran Multicerviços — versão Render + Supabase
 
 Esta versão foi preparada para rodar no **Render Free** sem depender do disco local para os dados do site.
 
@@ -53,6 +53,7 @@ No Render:
 
 ```text
 ADMIN_PASSWORD=uma-senha-forte
+ADMIN_RECOVERY_KEY=uma-chave-de-recuperacao-longa-e-secreta
 SESSION_SECRET=uma-chave-aleatoria-forte
 SUPABASE_URL=https://SEU-PROJETO.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=SUA_SERVICE_ROLE_KEY
@@ -97,6 +98,7 @@ O Supabase Free atualmente inclui 500 MB de banco de dados e 1 GB de Storage, al
 Antes de divulgar o site:
 
 - altere `ADMIN_PASSWORD`;
+- configure `ADMIN_RECOVERY_KEY` e guarde essa chave fora do GitHub;
 - use uma `SESSION_SECRET` forte;
 - nunca publique a `SUPABASE_SERVICE_ROLE_KEY`;
 - não coloque `.env` no GitHub;
@@ -118,3 +120,9 @@ Site: `http://localhost:3000`
 Painel: `http://localhost:3000/admin/`
 
 Health check: `http://localhost:3000/health`
+
+## Alteração e recuperação da senha
+
+Depois de entrar no painel, abra **Segurança** para alterar a senha. A nova senha fica guardada de forma criptográfica no conteúdo privado do Supabase e não é enviada pela API pública do site.
+
+Se esquecer a senha, use **Esqueci a senha** na página de login e informe a chave definida em `ADMIN_RECOVERY_KEY` no Render. Não publique nem envie essa chave ao GitHub.

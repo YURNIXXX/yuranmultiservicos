@@ -5,7 +5,7 @@
 # ============================================================
 services:
   - type: web
-    name: multiservicos-portfolio
+    name: yuranmultiservicos
     runtime: node
     plan: free
     buildCommand: npm install
@@ -16,6 +16,8 @@ services:
         sync: false
       - key: SESSION_SECRET
         generateValue: true
+      - key: ADMIN_RECOVERY_KEY
+        sync: false
       - key: SUPABASE_URL
         sync: false
       - key: SUPABASE_SERVICE_ROLE_KEY

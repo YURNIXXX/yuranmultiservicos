@@ -9,6 +9,7 @@ const { createClient } = require('@supabase/supabase-js');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'mudar-esta-senha';
+const ADMIN_RECOVERY_KEY = process.env.ADMIN_RECOVERY_KEY || '';
 const SESSION_SECRET = process.env.SESSION_SECRET || 'troque-esta-chave-em-producao';
 const SUPABASE_URL = process.env.SUPABASE_URL || '';
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -44,12 +45,46 @@ function normalizeUrl(value = '') {
   return `https://${v.replace(/^\/+/, '')}`;
 }
 
+function hashPassword(password) {
+  const salt = crypto.randomBytes(16).toString('hex');
+  const hash = crypto.scryptSync(String(password), salt, 64).toString('hex');
+  return `scrypt$${salt}$${hash}`;
+}
+function verifyPassword(password, stored) {
+  if (!stored || !stored.startsWith('scrypt$')) return false;
+  const [, salt, expectedHex] = stored.split('$');
+  if (!salt || !expectedHex) return false;
+  const actual = crypto.scryptSync(String(password), salt, 64);
+  const expected = Buffer.from(expectedHex, 'hex');
+  return expected.length === actual.length && crypto.timingSafeEqual(expected, actual);
+}
+function safeSecretEqual(a, b) {
+  const aa = Buffer.from(String(a || '')); const bb = Buffer.from(String(b || ''));
+  return aa.length === bb.length && aa.length > 0 && crypto.timingSafeEqual(aa, bb);
+}
+async function validAdminPassword(password) {
+  const data = await readData();
+  return data._admin?.passwordHash ? verifyPassword(password, data._admin.passwordHash) : String(password) === ADMIN_PASSWORD;
+}
+
 function normalizeContent(content) {
   content.settings ||= {};
+  if (!content.settings.siteName || content.settings.siteName === 'Nexa MultiServiços') content.settings.siteName = 'Yuran Multicerviços';
   content.settings.primaryColor ||= '#151a16';
-  content.settings.navHoverColor ||= '#00a884';
+  content.settings.heroColor ||= '#00C9A7';
+  content.settings.navHoverColor ||= '#00C9A7';
   content.settings.logo ||= '';
   content.settings.favicon ||= '';
+  content._admin ||= {};
+  content.socials ||= [];
+  if (!content.socials.length) {
+    const oldSocials = [
+      ['Instagram', 'instagram', 'bi-instagram'],
+      ['Facebook', 'facebook', 'bi-facebook'],
+      ['LinkedIn', 'linkedin', 'bi-linkedin']
+    ];
+    content.socials = oldSocials.filter(([, key]) => content.settings[key] && content.settings[key] !== '#').map(([platform, key, iconClass]) => ({ id: uid('social'), platform, url: normalizeUrl(content.settings[key]), iconClass }));
+  }
   const presets = {
     'eletricidade': { iconClass: 'bi-lightning-charge', oldColor: '#F28C28', color: '#F28C28' },
     'design-grafico': { iconClass: 'bi-palette', oldColor: '#708D75', color: '#00C9A7' },
@@ -67,7 +102,7 @@ function normalizeContent(content) {
     return next;
   });
   content.portfolio = (content.portfolio || []).map(p => ({ ...p, images: p.images?.length ? p.images : (p.image ? [p.image] : []) }));
-  content.partners ||= []; content.links ||= []; content.team ||= [];
+  content.partners ||= []; content.links = (content.links || []).map(l => ({ ...l, iconClass: l.iconClass || 'bi-link-45deg' })); content.team ||= [];
   return content;
 }
 
@@ -130,15 +165,40 @@ async function deleteUpload(url) {
 }
 
 app.get('/api/site', async (_, res) => {
-  try { res.json(await readData()); }
+  try { const data = await readData(); const { _admin, ...publicData } = data; res.json(publicData); }
   catch (error) { console.error(error); res.status(500).json({ error: 'Não foi possível carregar os dados.' }); }
 });
 
 app.get('/servico/:id', (_, res) => res.sendFile(path.join(__dirname, 'public', 'service.html')));
 
-app.post('/api/admin/login', (req, res) => {
-  if (req.body.password === ADMIN_PASSWORD) { req.session.admin = true; return res.json({ ok: true }); }
-  res.status(401).json({ error: 'Senha incorreta.' });
+app.post('/api/admin/login', async (req, res) => {
+  try {
+    if (await validAdminPassword(req.body.password)) { req.session.admin = true; return res.json({ ok: true }); }
+    res.status(401).json({ error: 'Senha incorreta.' });
+  } catch (error) { console.error(error); res.status(500).json({ error: 'Não foi possível validar a senha.' }); }
+});
+app.post('/api/admin/change-password', requireAuth, async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body || {};
+    if (!(await validAdminPassword(currentPassword))) return res.status(401).json({ error: 'A senha atual está incorreta.' });
+    if (String(newPassword || '').length < 8) return res.status(400).json({ error: 'A nova senha deve ter pelo menos 8 caracteres.' });
+    const data = await readData();
+    data._admin ||= {}; data._admin.passwordHash = hashPassword(newPassword); data._admin.passwordUpdatedAt = new Date().toISOString();
+    await writeData(data);
+    res.json({ ok: true });
+  } catch (error) { console.error(error); res.status(500).json({ error: 'Erro ao alterar a senha.' }); }
+});
+app.post('/api/admin/recover-password', async (req, res) => {
+  try {
+    if (!ADMIN_RECOVERY_KEY) return res.status(503).json({ error: 'Recuperação ainda não configurada. Defina ADMIN_RECOVERY_KEY no Render.' });
+    const { recoveryKey, newPassword } = req.body || {};
+    if (!safeSecretEqual(recoveryKey, ADMIN_RECOVERY_KEY)) return res.status(401).json({ error: 'Código de recuperação inválido.' });
+    if (String(newPassword || '').length < 8) return res.status(400).json({ error: 'A nova senha deve ter pelo menos 8 caracteres.' });
+    const data = await readData();
+    data._admin ||= {}; data._admin.passwordHash = hashPassword(newPassword); data._admin.passwordUpdatedAt = new Date().toISOString();
+    await writeData(data);
+    res.json({ ok: true });
+  } catch (error) { console.error(error); res.status(500).json({ error: 'Erro ao recuperar a senha.' }); }
 });
 app.post('/api/admin/logout', requireAuth, (req, res) => req.session.destroy(() => res.json({ ok: true })));
 app.get('/api/admin/session', (req, res) => res.json({ authenticated: !!req.session.admin }));
@@ -223,14 +283,18 @@ app.delete('/api/admin/services/:id', requireAuth, async (req, res) => {
   } catch (error) { console.error(error); res.status(500).json({ error: 'Erro ao remover serviço.' }); }
 });
 
-// LINKS simples.
-['links'].forEach(collection => {
+// LIGAÇÕES e REDES SOCIAIS.
+['links', 'socials'].forEach(collection => {
   app.post(`/api/admin/${collection}`, requireAuth, async (req, res) => {
-    try { const data = await readData(); const item = { id: uid('link'), ...req.body }; data[collection].push(item); await writeData(data); res.json(item); }
-    catch (error) { console.error(error); res.status(500).json({ error: 'Erro ao adicionar item.' }); }
+    try {
+      const data = await readData();
+      const prefix = collection === 'socials' ? 'social' : 'link';
+      const item = { id: uid(prefix), ...req.body, url: normalizeUrl(req.body.url || '') };
+      data[collection] ||= []; data[collection].push(item); await writeData(data); res.json(item);
+    } catch (error) { console.error(error); res.status(500).json({ error: 'Erro ao adicionar item.' }); }
   });
   app.delete(`/api/admin/${collection}/:id`, requireAuth, async (req, res) => {
-    try { const data = await readData(); data[collection] = data[collection].filter(i => i.id !== req.params.id); await writeData(data); res.json({ ok: true }); }
+    try { const data = await readData(); data[collection] = (data[collection] || []).filter(i => i.id !== req.params.id); await writeData(data); res.json({ ok: true }); }
     catch (error) { console.error(error); res.status(500).json({ error: 'Erro ao remover item.' }); }
   });
 });
