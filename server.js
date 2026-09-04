@@ -15,6 +15,17 @@ const SUPABASE_URL = process.env.SUPABASE_URL || '';
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 const STORAGE_BUCKET = process.env.SUPABASE_STORAGE_BUCKET || 'uploads';
 const USE_SUPABASE = Boolean(SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY);
+const ALLOW_LOCAL_STORAGE = process.env.ALLOW_LOCAL_STORAGE === 'true';
+
+// Nunca deixe produção cair silenciosamente para armazenamento local.
+// No Render, o sistema de ficheiros da instância é efémero e os dados seriam perdidos
+// num restart/redeploy. Para desenvolvimento local, use ALLOW_LOCAL_STORAGE=true.
+if (!USE_SUPABASE && !ALLOW_LOCAL_STORAGE) {
+  console.error('ERRO FATAL: SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY não estão configuradas.');
+  console.error('O servidor foi interrompido para evitar perda de dados no armazenamento local.');
+  process.exit(1);
+}
+
 const supabase = USE_SUPABASE ? createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } }) : null;
 
 const DATA_FILE = path.join(__dirname, 'data', 'site.json');
@@ -359,5 +370,5 @@ app.delete('/api/admin/team/:id', requireAuth, async (req, res) => {
   } catch (error) { console.error(error); res.status(500).json({ error: 'Erro ao remover profissional.' }); }
 });
 
-app.get('/health', (_, res) => res.json({ ok: true, storage: USE_SUPABASE ? 'supabase' : 'local' }));
+app.get('/health', (_, res) => res.json({ ok: true, storage: USE_SUPABASE ? 'supabase' : 'local', persistent: USE_SUPABASE, supabaseConfigured: USE_SUPABASE }));
 app.listen(PORT, () => { console.log(`Site disponível na porta ${PORT}`); console.log(`Armazenamento: ${USE_SUPABASE ? 'Supabase (persistente)' : 'local (desenvolvimento)'}`); });
