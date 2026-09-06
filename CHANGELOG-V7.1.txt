@@ -1,0 +1,50 @@
+YURAN MULTICERVIÇOS — V7.1
+Correções e refinamentos após testes da V7.0
+
+1. PAINEL ADMINISTRATIVO / MODERAÇÃO
+- Reestruturadas as ações de moderação para funcionamento mais robusto.
+- Validação/rejeição de identidade, aprovação, rejeição, suspensão e destaque usam eventos JS dedicados.
+- O registo de auditoria deixou de bloquear a ação principal caso o log tenha algum problema.
+- Mensagens de erro do backend são apresentadas com mais detalhe.
+- Adicionado formulário administrativo para editar dados principais do profissional.
+- Adicionada exclusão direta e definitiva do profissional pela área de Moderação.
+- Exclusão remove documentos privados, fotografia, CV, capas de serviços e imagens de projetos antes de eliminar a conta.
+- Estados de identidade apresentados em português.
+
+2. CURRÍCULOS
+- Removido o currículo da secção antiga de Equipa/Técnicos do site.
+- Currículo permanece como recurso individual de todos os profissionais cadastrados, através da área profissional.
+- O CV publicado aparece no perfil público do respetivo profissional.
+
+3. PROJETOS
+- Projetos profissionais continuam aceitando múltiplas imagens.
+- Adicionada galeria pública para visualizar todas as imagens dos projetos no perfil profissional.
+- A mesma galeria foi aplicada aos projetos relacionados nas páginas de serviço do profissional.
+- Removido o botão/link externo "Ver projeto" que aparecia abaixo de "Ver profissional".
+- Links externos de projeto foram retirados dos formulários visíveis; dados antigos continuam compatíveis.
+
+4. SELO VERIFICADO
+- Removido o chip separado "Selo verificado" da área do profissional.
+- Quando válido, o selo aparece apenas como ícone ao lado do nome.
+- O selo público só é apresentado quando perfil e identidade estão aprovados.
+- Se a identidade for rejeitada ou voltar para análise, o selo público deixa de ser exibido.
+
+5. MOBILE / ESPAÇAMENTOS
+- Refinados espaçamentos do painel profissional em telemóveis.
+- Corrigidos os botões "Completar perfil" e "Ver todas", que estavam com aparência/ocupação excessiva.
+- Melhorado o scroll horizontal das abas da área profissional.
+- Ajustados cards de métricas, painel de progresso, notificações e projetos.
+- Corrigido o gráfico/anel e a barra da percentagem de perfil completo.
+
+6. SENHAS
+- Adicionado botão de olho para mostrar/ocultar senha no login.
+- Adicionado no cadastro: criar senha e confirmar senha.
+- Adicionado na redefinição de senha.
+- Adicionado também na alteração de senha da área profissional.
+
+7. CACHE/PWA
+- Cache do Service Worker atualizado para V7.1 para evitar que navegadores continuem servindo CSS/JS antigos após o deploy.
+
+BANCO DE DADOS
+- Esta versão NÃO exige novo SQL.
+- Não execute novamente o SQL V7.0 apenas por causa da V7.1.

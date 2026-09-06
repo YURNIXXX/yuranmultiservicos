@@ -1,0 +1,21 @@
+V6.2
+- Cabeçalho público padronizado com apenas o logotipo.
+- Fundo do hero por cor ou imagem controlado no admin.
+- Páginas de profissionais/login/perfil/dashboard com o mesmo menu do site.
+- Dashboard profissional redesenhado como área de usuário.
+- Alteração de senha pelo profissional.
+- Recuperação de senha mediada pelo admin.
+- Cadastro obrigatório com nome, endereço, celular, WhatsApp, senha/confirmar e documento frente/verso.
+- Documentos de identificação em bucket privado + links assinados para o admin.
+- Login Google preparado via Supabase Auth.
+- Bloqueio de publicação até autenticação da identidade.
+- Diretório exibe serviços de cada profissional.
+- Perfil exibe foto, especialidade, CV, serviços, projetos e contactos individuais.
+- Contacto institucional removido da página inicial.
+- Contacto direto por profissional/serviço.
+- Página inicial mostra apenas serviços e trabalhos marcados como destaque.
+- Admin pode destacar projetos profissionais.
+- Métricas por profissional: visualizações, contactos e avaliações.
+- Avaliação 1–5 estrelas por atendimento geral ou serviço.
+- Sistema de denúncias.
+- Advertência, suspensão temporária, exclusão e descarte de denúncia pelo admin.

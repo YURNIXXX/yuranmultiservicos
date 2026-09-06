@@ -1,0 +1,38 @@
+YURAN MULTICERVIÇOS — INSTALAÇÃO V7.1
+
+Esta atualização não exige alterações no banco de dados.
+
+1. Faça backup do repositório atual, se desejar.
+2. Substitua no GitHub os arquivos atuais pelos arquivos desta V7.1.
+3. Faça commit/push.
+4. Aguarde o deploy automático do Render.
+5. Não execute SQL adicional.
+6. Não remova as variáveis de ambiente já configuradas.
+
+TESTE APÓS O DEPLOY
+
+ADMIN
+- /admin/
+- Moderação > Ver frente / Ver verso
+- Validar identidade
+- Rejeitar documento
+- Aprovar/Rejeitar/Suspender perfil
+- Editar dados do profissional
+- Excluir uma conta de teste
+
+PROFISSIONAL
+- /profissional
+- Testar olho de mostrar/ocultar senha
+- Testar cadastro com confirmação de senha
+- /profissional/dashboard
+- Confirmar selo apenas ao lado do nome
+- Confirmar layout mobile
+- Publicar projeto com várias imagens
+
+PÚBLICO
+- Abrir um perfil profissional com CV
+- Abrir projeto com várias imagens e navegar pelas setas
+- Confirmar que não existe mais botão externo "Ver projeto" abaixo de "Ver profissional"
+
+OBSERVAÇÃO SOBRE CACHE
+O Service Worker foi versionado. Mesmo assim, se um telefone mantiver conteúdo antigo por alguns segundos, feche e abra novamente o site depois que o novo deploy estiver concluído.

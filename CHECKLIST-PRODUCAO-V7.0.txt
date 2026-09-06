@@ -1,0 +1,43 @@
+CHECKLIST PARA TORNAR A YURAN MULTICERVIÇOS UMA MARCA CONFIÁVEL
+===============================================================
+
+CÓDIGO / PLATAFORMA — IMPLEMENTADO NESTA VERSÃO
+[OK] Perfis moderados e identidade privada.
+[OK] Selo verificado manual.
+[OK] Qualidade mínima antes da publicação.
+[OK] Avaliações ligadas a contacto registado.
+[OK] Respostas a avaliações.
+[OK] Denúncias com protocolo e histórico.
+[OK] Suspensão/advertência/exclusão.
+[OK] Auditoria administrativa.
+[OK] Métricas por profissional.
+[OK] Pesquisa e filtros.
+[OK] Categorias e profissionais em destaque.
+[OK] Centro de notificações.
+[OK] Política/Termos e aceite obrigatório.
+[OK] Retenção de documentos.
+[OK] Segurança de upload/sessão/2FA/rate limit/CSP.
+[OK] SEO, sitemap, robots e PWA básica.
+[OK] Recuperação segura de senha por e-mail quando configurado.
+
+OPERAÇÃO / MARCA — FAZER ANTES DE DIVULGAÇÃO EM GRANDE ESCALA
+[ ] Comprar/configurar domínio próprio definitivo.
+[ ] Criar e-mails profissionais do domínio (suporte, verificação, parcerias).
+[ ] Verificar o domínio no Google Search Console.
+[ ] Completar branding/verificação do Google OAuth.
+[ ] Configurar RESEND_API_KEY e EMAIL_FROM com domínio autenticado.
+[ ] Ativar 2FA do administrador.
+[ ] Guardar ADMIN_RECOVERY_KEY e SESSION_SECRET em gestor de senhas.
+[ ] Definir rotina de backup/exportação do Supabase.
+[ ] Rever Termos/Privacidade com profissional jurídico em Moçambique.
+[ ] Definir critérios escritos para conceder/remover o selo verificado.
+[ ] Definir política interna de moderação e tempos de resposta às denúncias.
+[ ] Publicar apenas categorias onde já existam profissionais reais.
+[ ] Preparar pelo menos alguns perfis/projetos fortes antes do lançamento público.
+[ ] Testar todo o fluxo em Android, iPhone, tablet e desktop.
+[ ] Medir velocidade/SEO depois de ligar o domínio definitivo.
+
+PRINCÍPIO DE MARCA
+------------------
+Não inflar números, não criar avaliações falsas e não distribuir selo indiscriminadamente.
+A confiança deve vir de informação verificável, moderação consistente e boa experiência do utilizador.

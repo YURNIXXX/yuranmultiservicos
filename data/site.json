@@ -13,7 +13,10 @@
     "navHoverColor": "#00C9A7",
     "logo": "",
     "favicon": "",
-    "heroColor": "#00C9A7"
+    "heroColor": "#00C9A7",
+    "headerLogo": "",
+    "heroLogo": "",
+    "address": "Maputo, Moçambique"
   },
   "services": [
     {
@@ -107,19 +110,25 @@
       "id": "parceiro-1",
       "name": "Parceiro 01",
       "logo": "",
-      "url": "#"
+      "url": "#",
+      "logoLight": "",
+      "logoDark": ""
     },
     {
       "id": "parceiro-2",
       "name": "Parceiro 02",
       "logo": "",
-      "url": "#"
+      "url": "#",
+      "logoLight": "",
+      "logoDark": ""
     },
     {
       "id": "parceiro-3",
       "name": "Parceiro 03",
       "logo": "",
-      "url": "#"
+      "url": "#",
+      "logoLight": "",
+      "logoDark": ""
     }
   ],
   "links": [

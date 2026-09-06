@@ -1,0 +1,50 @@
+YURAN MULTICERVIÇOS — V7.2
+============================
+
+FOCO DESTA VERSÃO
+- Estabilidade da página inicial após refresh/deploy.
+- Perfil profissional mais estruturado.
+- Melhor experiência mobile.
+- Moderação administrativa sem caixas nativas do navegador.
+- Centro de comunicação por e-mail + notificações internas.
+
+ALTERAÇÕES
+1. Página inicial
+- Cache da PWA atualizado para V7.2.
+- JavaScript e CSS passam a usar estratégia network-first.
+- APIs não são interceptadas pelo Service Worker.
+- Arquivos HTML/JS/CSS são entregues com no-cache/no-store pelo servidor.
+- Conteúdo com classe reveal deixa de ficar invisível caso JavaScript/API demore ou falhe.
+- /api/site e dados de destaque possuem carregamento independente e fallback local.
+
+2. Logotipo
+- Removido o Y genérico visível como fallback.
+- O cabeçalho usa o logotipo carregado no painel.
+- O último logotipo válido é mantido em cache local para aparecer imediatamente em novas páginas.
+
+3. Perfil profissional
+- Idiomas agora possuem seletor de idiomas comuns + chips removíveis + opção de idioma personalizado.
+- Adicionada Formação Académica com até 3 registos.
+- Cada formação possui Faculdade/Instituto, Curso/Formação e Ano de conclusão.
+- As formações aparecem no perfil público do profissional.
+- Certificações/cursos complementares permanecem como campo independente.
+- Botão Completar perfil corrigido e passa a abrir/rolar para a aba Meu perfil.
+- Botão Ver todas das notificações também foi corrigido.
+- Ajustes adicionais de espaçamento no mobile.
+
+4. Administração
+- Prompts/confirms nativos substituídos por modal central personalizado nas ações de moderação.
+- Rejeição, suspensão, exclusão, selo verificado, denúncias, avaliações, 2FA e limpeza de documentos usam o novo diálogo.
+- Alertas administrativos também usam interface própria.
+- Nova aba Comunicação.
+
+5. Comunicação por e-mail
+- Envio individual para um profissional.
+- Envio para todos os profissionais.
+- A mesma comunicação é adicionada ao centro de notificações do profissional.
+- Histórico resumido dos envios no painel.
+- Cadastro, análise, validação documental, aprovação/rejeição de perfil, serviços/projetos, advertências e suspensões continuam gerando notificações automáticas e enviam e-mail quando o serviço transacional estiver configurado.
+
+BANCO DE DADOS
+Execute supabase-v7.2.sql uma única vez antes do deploy.
+Ele apenas adiciona a coluna education e a tabela admin_email_logs; não apaga dados existentes.

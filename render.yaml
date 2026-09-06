@@ -22,5 +22,17 @@ services:
         sync: false
       - key: SUPABASE_SERVICE_ROLE_KEY
         sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
       - key: SUPABASE_STORAGE_BUCKET
         value: uploads
+      - key: SUPABASE_VERIFICATION_BUCKET
+        value: verification-documents
+      - key: PUBLIC_BASE_URL
+        sync: false
+      - key: IDENTITY_RETENTION_DAYS
+        value: 30
+      - key: RESEND_API_KEY
+        sync: false
+      - key: EMAIL_FROM
+        sync: false

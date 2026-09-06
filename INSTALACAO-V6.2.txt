@@ -1,0 +1,137 @@
+YURAN MULTICERVIÇOS — V6.2
+============================
+
+ATUALIZAÇÃO SOBRE A V6.1
+
+1) SUPABASE
+-----------
+Abra Supabase > SQL Editor > New query.
+Cole e execute TODO o arquivo:
+
+supabase-v6.2.sql
+
+Este script NÃO apaga a V6.1. Ele adiciona:
+- verificação de identidade;
+- bucket privado verification-documents;
+- login Google (campos de ligação);
+- métricas de visualização/contacto;
+- avaliações em estrelas;
+- denúncias;
+- suspensão temporária;
+- recuperação de senha;
+- destaque de serviços/projetos.
+
+IMPORTANTE: documentos de identificação ficam no bucket PRIVADO
+verification-documents. Eles não recebem URL pública. O administrador
+abre cada documento através de um link assinado válido por 10 minutos.
+
+2) GITHUB / RENDER
+------------------
+Substitua os arquivos do projeto pelos arquivos desta V6.2 e faça o deploy.
+
+As variáveis principais continuam:
+SUPABASE_URL
+SUPABASE_SERVICE_ROLE_KEY
+SUPABASE_STORAGE_BUCKET=uploads
+SESSION_SECRET
+ADMIN_PASSWORD
+ADMIN_RECOVERY_KEY
+
+Novas/recomendadas:
+SUPABASE_VERIFICATION_BUCKET=verification-documents
+SUPABASE_ANON_KEY=<chave pública/publishable do Supabase>
+
+Se o Render ainda possui SUPABASE_KEY com a chave publishable antiga,
+o backend também aceita essa variável como fallback para o login Google.
+
+3) LOGIN GOOGLE
+---------------
+O código já está preparado.
+Para o botão funcionar, habilite o provedor Google em:
+Supabase > Authentication > Providers > Google.
+
+Será necessário informar o Google Client ID e Client Secret criados no
+Google Cloud. Configure também a URL pública do seu site nos Redirect URLs
+do Supabase/Google conforme indicado pelo painel do Supabase.
+
+Sem o Google configurado, cadastro e login por e-mail/senha continuam funcionando.
+
+4) MIGRAÇÃO DE PROFISSIONAIS JÁ EXISTENTES
+-------------------------------------------
+Profissionais criados na V6.1 não possuíam documento de identificação.
+Depois da atualização, eles poderão entrar normalmente, abrir:
+Minha área > Segurança > Autenticação da identidade
+e enviar frente e verso.
+
+O administrador deve:
+Admin > Moderação > Ver frente / Ver verso > Validar identidade
+Depois poderá Aprovar perfil.
+
+5) FLUXO DE NOVA CONTA
+----------------------
+No cadastro agora são obrigatórios:
+- nome completo;
+- e-mail;
+- endereço;
+- celular;
+- WhatsApp;
+- senha;
+- confirmação da senha;
+- frente do documento;
+- verso do documento.
+
+A conta é criada, mas serviços/projetos ficam bloqueados até a identidade
+ser validada pelo administrador.
+
+6) RECUPERAÇÃO DE SENHA
+-----------------------
+Como não existe ainda um provedor SMTP/SMS configurado no projeto, a V6.2
+usa recuperação mediada pela administração:
+- profissional clica “Esqueci a senha”;
+- informa e-mail + WhatsApp registados;
+- pedido aparece em Admin > Segurança;
+- admin gera uma senha temporária e envia ao profissional pelo contacto registado.
+
+O profissional também pode trocar a própria senha a qualquer momento em:
+Minha área > Segurança.
+
+7) DESTAQUES DA PÁGINA INICIAL
+------------------------------
+Admin > Serviços:
+marque/desmarque “Mostrar este serviço na página inicial”.
+
+Admin > Portfólio:
+use “Destacar” / “Remover destaque”.
+
+Projetos de profissionais aprovados também podem ser destacados em:
+Admin > Moderação > Projetos > Destacar na página inicial.
+
+8) MÉTRICAS / AVALIAÇÃO / DENÚNCIA
+----------------------------------
+Admin > Desempenho mostra:
+- visualizações do perfil;
+- contactos registados;
+- média e quantidade de avaliações;
+- denúncias abertas.
+
+No perfil público o visitante pode:
+- avaliar atendimento geral ou um serviço específico;
+- contactar diretamente por WhatsApp/telefone/e-mail;
+- denunciar fraude ou conduta imprópria.
+
+Admin > Denúncias permite:
+- Advertir;
+- Suspender temporariamente;
+- Ignorar denúncia;
+- Excluir profissional.
+
+9) TESTE DEPOIS DO DEPLOY
+-------------------------
+/health
+/
+/profissionais
+/profissional
+/profissional/dashboard
+/admin/
+
+V6.2 — Yuran Multicerviços

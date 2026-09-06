@@ -1,0 +1,12 @@
+{
+  "name": "Yuran Multicerviços",
+  "short_name": "Yuran",
+  "description": "Plataforma para encontrar profissionais, serviços e projetos.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0b0f0d",
+  "theme_color": "#0b0f0d",
+  "lang": "pt",
+  "categories": ["business", "productivity", "lifestyle"]
+}

@@ -1,0 +1,89 @@
+YURAN MULTICERVIÇOS — V7.0
+==========================
+FOCO: confiança, descoberta, reputação, segurança e maturidade visual.
+
+SITE PÚBLICO
+- Homepage reposicionada como plataforma de profissionais.
+- CTAs: Encontrar profissional / Divulgar meus serviços.
+- Indicadores reais de profissionais, serviços, projetos e avaliação.
+- Categorias públicas.
+- Profissionais em destaque escolhidos pelo administrador.
+- Conteúdo institucional mais profissional.
+- Como funciona, Ajuda, Privacidade e Termos.
+- Rodapé institucional e legal.
+
+DESCOBERTA
+- Pesquisa por nome, serviço, especialidade e competências.
+- Filtros por categoria, localização, disponibilidade, avaliação e selo.
+- Favoritos no navegador do visitante.
+- Página própria para cada serviço profissional.
+
+PERFIL PROFISSIONAL
+- Headline profissional.
+- Anos de experiência.
+- Área de atendimento.
+- Disponibilidade.
+- Idiomas.
+- Competências.
+- Formação/certificações declaradas.
+- Tempo de resposta.
+- Indicadores de confiança.
+- Perfil completo/qualidade mínima antes da aprovação.
+
+REPUTAÇÃO
+- Avaliação após contacto registado.
+- Avaliação geral ou por serviço.
+- Resposta pública do profissional.
+- Moderação administrativa de avaliações.
+
+DENÚNCIAS E DISCIPLINA
+- Protocolo público para cada denúncia.
+- Advertência, suspensão, arquivamento ou exclusão.
+- Notificações ao profissional.
+- Auditoria administrativa.
+
+PAINEL PROFISSIONAL
+- Design de área de utilizador.
+- Onboarding e percentagem de perfil completo.
+- Serviços e projetos editáveis.
+- Centro de notificações.
+- Área de avaliações e respostas.
+- Segurança e alteração de senha.
+- Mensagens amigáveis para estados pendentes/rejeitados.
+
+PAINEL ADMINISTRATIVO
+- Dashboard de métricas.
+- Profissionais/serviços/projetos pendentes.
+- Contagem de views/contactos.
+- Categorias com maior oferta.
+- Avaliações.
+- Auditoria.
+- Gestão de documentos e retenção.
+- Destaque manual de profissionais e projetos.
+- Selo verificado manual e independente da identidade.
+- 2FA TOTP opcional.
+
+SEGURANÇA
+- Sessões persistentes em Supabase.
+- Regeneração de sessão no login.
+- Cookies seguros em produção.
+- Rate limiting em autenticação/cadastro/feedback.
+- Same-Origin Guard.
+- Helmet + Content Security Policy.
+- Validação da assinatura real de imagens/PDFs, além do MIME.
+- Bucket privado para identidade.
+- Links assinados temporários para revisão documental.
+- Eliminação automática de documentos após retenção.
+
+RECUPERAÇÃO E COMUNICAÇÃO
+- Recuperação por link temporário de 30 minutos quando Resend está configurado.
+- Fallback administrativo quando não existe e-mail transacional.
+- Notificações por e-mail opcionais.
+
+SEO / PERFORMANCE / PWA
+- SEO title/description configuráveis no Admin.
+- sitemap.xml dinâmico.
+- robots.txt.
+- metadados por perfil/serviço no navegador.
+- PWA básica com manifest + service worker.
+- lazy loading onde aplicável.

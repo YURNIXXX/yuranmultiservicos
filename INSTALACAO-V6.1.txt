@@ -1,0 +1,38 @@
+YURAN MULTICERVIÇOS — V6.1
+
+1) SUPABASE
+Abra o projeto Supabase > SQL Editor > New query.
+Copie TODO o conteúdo de supabase-v6.1.sql, execute e confirme "Success".
+Não apague a tabela site_content nem o bucket uploads existentes.
+
+2) GITHUB
+Substitua os arquivos do repositório pelos arquivos desta V6.1 e faça commit/push.
+
+3) RENDER
+As variáveis já usadas pela V5 continuam iguais:
+- SUPABASE_URL
+- SUPABASE_SERVICE_ROLE_KEY
+- SESSION_SECRET
+- ADMIN_PASSWORD (senha inicial/fallback)
+- ADMIN_RECOVERY_KEY
+- SUPABASE_STORAGE_BUCKET=uploads (opcional; uploads é o padrão)
+Não troque a SERVICE ROLE pela publishable key.
+
+4) TESTE APÓS DEPLOY
+- /health -> deve mostrar persistent:true e storage:"supabase"
+- /profissional -> cadastro/login do profissional
+- /profissional/dashboard -> painel do profissional
+- /profissionais -> diretório público
+- /admin/ -> painel admin; nova aba Moderação
+
+5) FLUXO DE MODERAÇÃO
+- cadastro profissional = pending
+- serviço novo = pending
+- projeto novo = pending
+- admin abre Moderação e Aprova/Rejeita/Suspende
+- somente approved aparece publicamente
+- alteração de perfil aprovado volta o perfil para pending
+
+6) SEGURANÇA
+As senhas profissionais ficam armazenadas como hash scrypt; não são gravadas em texto puro.
+As tabelas novas têm RLS habilitado. O acesso da aplicação ocorre no backend com a SERVICE ROLE.

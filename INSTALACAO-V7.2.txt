@@ -1,0 +1,55 @@
+YURAN MULTICERVIÇOS — INSTALAÇÃO V7.2
+======================================
+
+1. SUPABASE
+Abra Supabase > SQL Editor > New query.
+Execute TODO o conteúdo de:
+  supabase-v7.2.sql
+
+Execute apenas uma vez. O SQL não apaga os profissionais, serviços ou projetos existentes.
+
+2. GITHUB / RENDER
+Substitua os arquivos atuais do repositório pelos arquivos desta V7.2 e faça o commit.
+Aguarde o deploy automático do Render.
+
+3. VARIÁVEIS QUE DEVEM CONTINUAR NO RENDER
+SUPABASE_URL
+SUPABASE_ANON_KEY
+SUPABASE_SERVICE_ROLE_KEY
+ADMIN_RECOVERY_KEY
+SESSION_SECRET
+PUBLIC_BASE_URL=https://SEU-SITE
+IDENTITY_RETENTION_DAYS=30
+
+4. PARA ATIVAR E-MAILS
+O projeto usa Resend para e-mail transacional.
+No Render, configure:
+  RESEND_API_KEY=...
+  EMAIL_FROM=Yuran Multicerviços <noreply@SEU-DOMINIO>
+
+Enquanto estas duas variáveis não estiverem configuradas:
+- a plataforma continua funcionando;
+- notificações internas continuam sendo criadas;
+- a aba Comunicação mostrará que o envio de e-mail está pendente;
+- nenhum e-mail externo será enviado.
+
+Quando estiver configurado, os seguintes eventos já podem gerar e-mail automaticamente:
+- cadastro recebido / perfil e documentos em análise;
+- identidade validada ou documento rejeitado;
+- perfil aprovado, rejeitado ou suspenso;
+- serviço/projeto enviado, aprovado ou rejeitado;
+- advertência e suspensão;
+- mensagens enviadas manualmente pelo Admin > Comunicação.
+
+5. APÓS O DEPLOY
+No computador use Ctrl + Shift + R uma vez.
+No telemóvel, feche o navegador completamente e abra novamente.
+A V7.2 usa um novo cache de PWA e força atualização dos recursos principais.
+
+6. TESTE RÁPIDO
+- Abra / e faça vários refresh; o conteúdo deve continuar aparecendo.
+- Confirme que o cabeçalho mostra o logotipo e não o Y genérico.
+- Área profissional > Meu perfil: teste idiomas e 3 formações.
+- Visão geral: teste Completar perfil.
+- Admin > Moderação: teste rejeitar/aprovar e confirme o novo modal central.
+- Admin > Comunicação: teste envio individual; depois envio geral somente quando desejar.

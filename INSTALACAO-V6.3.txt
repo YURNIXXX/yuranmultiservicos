@@ -1,0 +1,15 @@
+YURAN MULTICERVIÇOS V6.3 — ATUALIZAÇÃO
+
+1. No Supabase > SQL Editor, execute uma única vez o arquivo supabase-v6.3.sql.
+   Ele NÃO recria tabelas. Apenas remove os selos `verified` que a V6.2 atribuiu automaticamente, para que você volte a atribuí-los manualmente no painel.
+
+2. Substitua no GitHub os arquivos atuais pelos arquivos desta V6.3 e faça commit.
+
+3. Aguarde o deploy automático do Render. Não altere as variáveis de ambiente atuais.
+
+4. No painel administrativo:
+   - Geral: agora existem uploads separados para Logotipo da barra de menu e Logotipo da área inicial.
+   - Parceiros: envie uma versão para modo claro e outra para modo escuro.
+   - Moderação: após validar a identidade e aprovar o perfil, use “Atribuir selo verificado” quando desejar.
+
+5. Teste /, /profissionais, /profissional/dashboard e /admin/.

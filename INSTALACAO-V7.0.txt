@@ -1,0 +1,128 @@
+YURAN MULTICERVIÇOS — INSTALAÇÃO V7.0
+=====================================
+
+IMPORTANTE
+----------
+Esta versão altera a arquitetura do banco e adiciona uma tabela de sessões.
+Execute o SQL V7.0 ANTES do novo deploy. O SQL foi escrito para preservar os dados existentes.
+
+1. BACKUP / PONTO DE RETORNO
+----------------------------
+- Mantenha o ZIP/repositório da versão que está atualmente online.
+- Se tiver opção de backup/exportação no Supabase, faça uma cópia antes da migração.
+
+2. SUPABASE
+-----------
+No Supabase:
+SQL Editor > New query
+
+Abra e execute TODO o arquivo:
+  supabase-v7.0.sql
+
+Ele NÃO recria as tabelas V6.1/V6.2/V6.3 e NÃO deve apagar profissionais existentes.
+
+3. GITHUB
+---------
+Substitua os arquivos atuais do repositório pelos desta versão e faça Commit/Push.
+
+4. RENDER — VARIÁVEIS OBRIGATÓRIAS
+----------------------------------
+Mantenha as que já funcionam:
+  SUPABASE_URL
+  SUPABASE_SERVICE_ROLE_KEY
+  SUPABASE_ANON_KEY
+  SESSION_SECRET
+  ADMIN_RECOVERY_KEY
+  SUPABASE_STORAGE_BUCKET=uploads
+  SUPABASE_VERIFICATION_BUCKET=verification-documents
+
+Adicione/defina:
+  PUBLIC_BASE_URL=https://SEU-ENDERECO-REAL
+  IDENTITY_RETENTION_DAYS=30
+
+PUBLIC_BASE_URL deve ser o endereço HTTPS real do site, sem barra no final.
+Exemplo:
+  https://seusite.onrender.com
+ou, quando tiver domínio próprio:
+  https://www.seudominio.co.mz
+
+5. E-MAIL TRANSACIONAL — OPCIONAL, MAS RECOMENDADO
+--------------------------------------------------
+A plataforma já está preparada para notificações e recuperação de senha por e-mail.
+Se quiser ativar, configure no Render:
+  RESEND_API_KEY=...
+  EMAIL_FROM=Yuran Multicerviços <noreply@seudominio.com>
+
+Sem essas duas variáveis, a plataforma continua a funcionar e os pedidos de recuperação aparecem no Admin para tratamento manual.
+
+6. GOOGLE LOGIN
+---------------
+A configuração atual do Google/Supabase continua válida.
+Ao mudar para domínio próprio, atualize também:
+- Google Cloud > Authorized origins / redirects, conforme a configuração OAuth.
+- Supabase > Authentication > URL Configuration > Site URL / Redirect URLs.
+
+7. PRIMEIRO TESTE APÓS O DEPLOY
+-------------------------------
+Abra nesta ordem:
+  /health
+  /
+  /profissionais
+  /categorias
+  /como-funciona
+  /ajuda
+  /politica-de-privacidade
+  /termos-de-uso
+  /profissional
+  /admin/
+
+Em /health confirme:
+  ok: true
+  storage: supabase
+  persistent: true
+
+8. TESTE DE FLUXO PROFISSIONAL
+------------------------------
+- Criar conta de teste.
+- Confirmar Termos/Privacidade.
+- Enviar documento frente/verso.
+- Entrar no painel.
+- Completar perfil.
+- No Admin, validar identidade e aprovar perfil.
+- Criar serviço e projeto.
+- Aprovar ambos no Admin.
+- Confirmar que aparecem publicamente.
+- Fazer contacto pelo perfil.
+- Depois do contacto, testar avaliação.
+- Testar resposta do profissional à avaliação.
+- Testar denúncia e protocolo.
+
+9. SEGURANÇA DO ADMIN
+---------------------
+Depois de confirmar que o deploy funciona:
+Admin > Segurança > Autenticação em dois fatores (2FA)
+
+Ative usando uma aplicação TOTP como Google Authenticator ou Microsoft Authenticator.
+Guarde a ADMIN_RECOVERY_KEY em local seguro e fora do GitHub.
+
+10. DOCUMENTOS DE IDENTIDADE
+----------------------------
+Após decisão administrativa, os documentos ficam sujeitos ao prazo definido em:
+  IDENTITY_RETENTION_DAYS
+
+O padrão é 30 dias.
+Depois do prazo, a plataforma elimina os ficheiros privados automaticamente e mantém apenas o registo administrativo da análise.
+
+11. DOMÍNIO PRÓPRIO — RECOMENDADO PARA PRODUÇÃO
+----------------------------------------------
+A aplicação funciona no Render sem domínio próprio, mas para credibilidade pública recomenda-se usar domínio definitivo e e-mails desse domínio.
+Depois de ligar o domínio:
+- atualize PUBLIC_BASE_URL;
+- atualize Google OAuth;
+- atualize Supabase Auth Redirect URLs;
+- verifique sitemap.xml e robots.txt.
+
+12. AVISO JURÍDICO
+------------------
+Os textos de Termos e Privacidade foram integrados como base operacional da plataforma.
+Antes de operação comercial de maior escala, recomenda-se revisão por profissional jurídico familiarizado com a legislação aplicável em Moçambique.

@@ -1,0 +1,11 @@
+YURAN MULTICERVIÇOS V6.3
+
+- Advertências administrativas agora possuem botão de fechar; cada nova advertência volta a aparecer.
+- Logotipo da barra de menu e logotipo da área inicial passaram a ter uploads independentes.
+- Textos das áreas de serviços e projetos da página inicial foram reescritos em linguagem comercial/profissional.
+- Parceiros agora aceitam um logotipo para modo claro e outro para modo escuro.
+- Rodapé redesenhado com contactos, endereço, redes sociais e atalhos em linha.
+- Selo público de profissional verificado deixou de ser automático e passou a ser controlado manualmente pelo administrador.
+- Profissionais aprovados continuam públicos mesmo sem o selo verificado; o selo passa a ser apenas um distintivo adicional.
+- Nome no cabeçalho da área profissional reduzido para melhorar hierarquia visual.
+- Rodapés das páginas de profissionais/perfil/área profissional foram uniformizados.
