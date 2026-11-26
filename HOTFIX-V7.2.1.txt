@@ -1,0 +1,10 @@
+YURAN MULTICERVIÇOS — HOTFIX V7.2.1
+
+Correções:
+- Corrigido loop Login ↔ Área Profissional em contas novas/pendentes.
+- Adicionada a função blockedNotice usada nas áreas Serviços e Projetos enquanto a conta aguarda validação.
+- O painel agora redireciona ao login apenas quando a API responde 401 (sessão realmente ausente).
+- Erros de renderização/servidor deixam de provocar loop e passam a mostrar uma mensagem com botão Tentar novamente.
+- Cache-busting do dashboard.js para v7.2.1.
+
+Não requer SQL.

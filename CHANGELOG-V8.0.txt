@@ -1,0 +1,13 @@
+YURAN MULTICERVIÇOS V8.0
+
+- Estrutura de planos Gratuito, PRO, PRO+, Empresarial e Empresarial + 5 Serviços.
+- Cobrança mensal e anual preparada.
+- Limites diferenciados de projetos por plano.
+- Serviços personalizados até 5 no Empresarial +.
+- Publicação imediata de serviços personalizados.
+- Período de tolerância de 7 dias após expiração.
+- Downgrade sem apagar projetos ou serviços: excedentes ficam arquivados.
+- Dashboard passa a mostrar plano e utilização.
+- Endpoint de planos e API para serviços personalizados.
+- Destaques permanecem como monetização separada.
+- Integração de pagamentos fica para a próxima fase.

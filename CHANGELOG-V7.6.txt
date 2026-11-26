@@ -1,0 +1,55 @@
+YURAN MULTICERVIÇOS — V7.6
+Categorias, Pesquisa, Localização e UX
+
+1. CATEGORIAS
+- Criada lista gerida pela Administração.
+- Profissional passa a selecionar categoria em dropdown, em vez de digitar livremente.
+- Admin pode adicionar, editar, desativar e remover categorias não utilizadas.
+- Cada categoria pode ter palavras-chave/sinónimos usados pela pesquisa.
+
+2. PESQUISA
+- Pesquisa ponderada por nome do serviço, categoria, palavras-chave, descrição, especialidade, competências e perfil.
+- Relações como "plantas" -> agropecuária/jardinagem, "fios" -> eletricidade e "logotipo" -> design/branding.
+- Pesquisa sem acentos e com correspondência parcial.
+- Analytics de pesquisas dos últimos 30 dias, termos mais pesquisados e buscas sem resultados.
+- Interface de filtros reorganizada e hover de "Limpar filtros" corrigido.
+
+3. LOCALIZAÇÃO
+- Perfil passa a ter Província, Distrito/Cidade e Bairro/Localidade.
+- Admin pode mapear bairro/localidade para distrito e província.
+- Busca por bairro pode ampliar resultados para distrito/província quando necessário.
+
+4. PREÇO DOS SERVIÇOS
+- Opções "Sob consulta" e "Com preço".
+- Ao escolher preço, aparece campo numérico com moeda fixa MT.
+- Compatibilidade visual com o campo legado `price` mantida; ao editar, o serviço passa para o novo modelo.
+
+5. PERFIL PROFISSIONAL
+- CV é explicitamente opcional e não impede atingir 100%.
+- Confirmação Yuran antes de aplicar alterações.
+- Perfis já aprovados mantêm a versão pública anterior enquanto alterações ficam em análise.
+- Alterações aprovadas substituem a versão pública; alterações rejeitadas não derrubam o perfil publicado.
+- Certificações/cursos são apresentados em itens separados.
+- Informações factuais permanecem alinhadas à esquerda.
+
+6. SESSÃO
+- Sessão do profissional passa a ser persistente e renovada durante o uso.
+- Admin continua com sessão mais curta por segurança.
+
+7. IDENTIDADE VISUAL
+- Área Profissional destacada no menu com fundo #00D88B e texto branco.
+- Uploads, selects, checkboxes e radios recebem estilo próprio Yuran.
+- Admin permite logo específico, fundo do logo e favicon.
+
+8. ADMIN
+- Novo módulo de Categorias.
+- Novo mapa administrativo de bairros/localidades.
+- Dashboard recebe indicadores de pesquisa.
+- Alterações pendentes de perfil mostram comparação para moderação.
+
+9. SEGURANÇA
+- Removida senha administrativa hardcoded/fallback.
+- Continuidade das proteções de sessão, 2FA, uploads, origem e dados privados das versões anteriores.
+
+10. BANCO
+- Nova migração: supabase-v7.6.sql.

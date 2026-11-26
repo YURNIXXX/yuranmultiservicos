@@ -1,0 +1,73 @@
+YURAN MULTICERVIÇOS V7.5 — ATUALIZAÇÃO
+======================================
+
+SE JÁ ESTÁ NA V7.4
+------------------
+1. NÃO execute novo SQL: a V7.5 não acrescenta colunas/tabelas.
+2. Confirme que supabase-v7.4.sql já foi executado anteriormente.
+3. Substitua os arquivos do repositório pelos arquivos deste pacote.
+4. Faça commit/push no GitHub.
+5. Aguarde o deploy do Render ficar Live.
+6. Abra https://SEU-DOMINIO/health e confirme:
+   - ok: true
+   - version: 7.5.0
+   - storage: supabase
+   - persistent: true
+   - sessionSecretConfigured: true
+   - totpEncryptionKeyConfigured: true (se usa 2FA)
+7. Faça uma atualização forçada no navegador ou feche/abra a PWA para receber os caches V7.5.
+
+VARIÁVEIS IMPORTANTES NO RENDER
+-------------------------------
+SESSION_SECRET
+TOTP_ENCRYPTION_KEY
+ADMIN_RECOVERY_KEY
+SUPABASE_URL
+SUPABASE_ANON_KEY
+SUPABASE_SERVICE_ROLE_KEY
+PUBLIC_BASE_URL
+IDENTITY_RETENTION_DAYS
+RESEND_API_KEY
+EMAIL_FROM
+
+Não coloque valores secretos no GitHub. Se uma chave já ficou pública no passado, rotacione-a.
+
+TESTES PRIORITÁRIOS APÓS DEPLOY
+------------------------------
+A. Admin / sidebar
+- Abrir painel no desktop.
+- Recolher sidebar.
+- Confirmar que o botão > continua visível.
+- Expandir novamente.
+- Atualizar a página e confirmar que o estado foi memorizado.
+- Abrir/fechar os grupos do menu.
+- Testar pesquisa rápida da topbar.
+- No telefone, abrir o menu, selecionar uma área e confirmar que o drawer fecha.
+
+B. Perfil profissional mobile
+- Abrir um perfil com zoom do navegador em 100%.
+- Confirmar que não existe scroll lateral nem necessidade de reduzir zoom.
+- Rolar até o fim e confirmar que o cabeçalho permanece visível.
+- Confirmar que biografia/descrições estão justificadas.
+- Confirmar que Área de atendimento, Idiomas, Certificações e Formação permanecem alinhados à esquerda.
+
+C. Cadastro
+- Criar conta por e-mail: somente nome/e-mail/senha/confirmação.
+- Entrar no painel e completar dados depois.
+- Criar conta Google nova e confirmar acesso direto ao painel.
+- Confirmar que conta draft não aparece na fila de moderação antes do envio para validação.
+
+D. 2FA
+- Testar código atual do Authenticator.
+- Se o segredo antigo tiver sido cifrado por outra TOTP_ENCRYPTION_KEY, usar “Problemas com o 2FA?” na tela 2FA.
+- A recuperação exige ADMIN_RECOVERY_KEY + senha administrativa.
+- Depois do reset: entrar, abrir Segurança e configurar um novo autenticador.
+- Não altere TOTP_ENCRYPTION_KEY depois da configuração.
+
+E. Admin offline
+- Com o painel já instalado/cacheado, simular servidor indisponível.
+- A navegação deve mostrar “Servidor indisponível”, não uma tela de login/painel aparentemente funcional.
+
+INSTALAÇÃO NOVA
+---------------
+Para uma instalação do zero, siga também as migrações SQL históricas/cumulativas já incluídas no pacote até supabase-v7.4.sql, de acordo com a instalação existente. A V7.5 não adiciona uma nova migração.

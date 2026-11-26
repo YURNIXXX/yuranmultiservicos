@@ -1,0 +1,55 @@
+YURAN MULTICERVIÇOS V7.5 — CONSOLIDAÇÃO, ADMIN E MOBILE
+==========================================================
+
+BASE
+- Construída sobre a V7.4.
+- Não exige nova migração SQL para quem já executou supabase-v7.4.sql.
+- Mantém onboarding por etapas, Google Login, PWA pública/Admin, perfis institucionais, comunicação, moderação e segurança da V7.4.
+
+1. PAINEL ADMINISTRATIVO
+- Corrigido o problema em que a sidebar recolhia e o botão de expansão desaparecia.
+- Sidebar agora expande e recolhe de forma real no desktop.
+- Estado expandido/recolhido é memorizado no navegador.
+- Ícone muda entre recolher e expandir conforme o estado.
+- Navegação reorganizada em grupos: Geral, Profissionais, Conteúdo, Confiança e controlo, Comunicação e sistema.
+- Cada grupo pode abrir/fechar e memoriza o seu estado.
+- Em modo recolhido, os ícones continuam acessíveis; os nomes aparecem por tooltip/título.
+- No mobile, a sidebar funciona como drawer/off-canvas e fecha ao selecionar uma área ou tocar fora.
+- Adicionada pesquisa rápida de áreas do painel na topbar; tecla / coloca o foco na pesquisa.
+- Centro de controlo mantém indicadores clicáveis e nomenclatura corrigida para categorias com mais oferta cadastrada.
+
+2. PERFIL PROFISSIONAL / RESPONSIVIDADE
+- Textos corridos continuam justificados em TV, desktop, tablet e mobile.
+- Área de atendimento, idiomas, certificações/cursos, formação e outros blocos factuais NÃO são justificados; ficam alinhados à esquerda.
+- Certificações preservam quebras de linha para melhor leitura.
+- Reforçada a prevenção de overflow horizontal no mobile.
+- Cabeçalho da área/perfil profissional passa a ficar fixo no mobile durante o scroll.
+- Ajustado o espaçamento superior para o conteúdo não ficar escondido atrás do cabeçalho.
+- Botões do perfil passam para uma coluna no mobile para evitar corte lateral.
+
+3. 2FA ADMINISTRATIVO
+- Validação TOTP passa a aceitar uma janela de ±30 segundos para pequenas diferenças de relógio.
+- Erro de chave de cifragem incompatível passa a ser identificado separadamente de código TOTP incorreto.
+- Adicionado fluxo seguro “Problemas com o 2FA?” na tela de autenticação.
+- Recuperação 2FA exige simultaneamente ADMIN_RECOVERY_KEY e senha administrativa.
+- Recuperação remove apenas a configuração 2FA e obriga nova configuração depois do login.
+- Ação de recuperação é enviada ao log de auditoria quando Supabase está ativo.
+- /health agora informa também a versão da aplicação.
+
+4. PWA / CACHE ADMIN
+- O Service Worker do Admin não apresenta mais uma tela administrativa antiga como se estivesse funcional quando o backend estiver offline.
+- Em falha de navegação, abre uma página própria “Servidor indisponível” com botão Tentar novamente.
+- Cache administrativo atualizado para yuran-admin-v7.5.
+- Cache público atualizado para yuran-static-v7.5.
+
+5. FLUXO PROFISSIONAL MANTIDO
+- Cadastro inicial: nome, e-mail, senha e confirmação, ou Google.
+- Conta entra no painel imediatamente em estado draft/preparação.
+- Dados pessoais, data de nascimento, número de identificação e documentos são exigidos somente na etapa de validação.
+- Perfil só entra na fila administrativa após Enviar perfil para validação.
+- CTA de criação de conta permanece no fim da página “Como funciona”.
+
+6. SOFTWARE / APP
+- Mantido o Yuran Admin instalável como PWA no desktop.
+- Mantida a Yuran Multicerviços instalável como PWA no telefone.
+- Esta versão não cria aplicativo nativo separado; usa a mesma API/backend para preparar essa evolução futura.

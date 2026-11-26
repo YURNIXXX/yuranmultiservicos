@@ -1,0 +1,61 @@
+YURAN MULTICERVIÇOS V7.7 — ROTEIRO DE QA
+
+A. DEPLOY
+[ ] `/health` mostra version 7.7.4.
+[ ] `/robots.txt` abre.
+[ ] `/sitemap.xml` abre e é XML válido.
+[ ] `/llms.txt` abre.
+
+B. LOGIN / DESEMPENHO
+[ ] Faça login profissional.
+[ ] Volte à página pública.
+[ ] Clique Área profissional.
+[ ] Não deve aparecer o formulário de login antes do dashboard.
+[ ] O dashboard não deve mostrar “Olá” vazio; deve usar carregamento e depois o nome.
+[ ] Feche e abra o navegador; a sessão profissional continua válida até Sair.
+
+C. E-MAIL
+[ ] Crie conta por e-mail/senha.
+[ ] Receba código de 6 dígitos.
+[ ] Código errado é rejeitado.
+[ ] Código correto confirma o e-mail.
+[ ] Reenvio respeita o intervalo.
+[ ] Sem e-mail verificado, “Enviar perfil para validação” é bloqueado.
+[ ] Conta Google aparece com e-mail verificado.
+
+D. IDENTIDADE
+[ ] Número do BI/documento aparece com explicação de conferência.
+[ ] Frente e verso são obrigatórios antes do primeiro envio.
+[ ] Sem frente/verso o backend rejeita.
+[ ] Documentos não aparecem no perfil público.
+
+E. PERFIL / MODAIS
+[ ] Editar perfil -> Guardar -> modal Yuran.
+[ ] Cancelar não guarda.
+[ ] Confirmar guarda.
+[ ] Modal de sucesso usa botão “Ir para visão geral”.
+[ ] Ao concluir, abre Visão geral.
+
+F. PESQUISA
+[ ] “Apenas com selo verificado” não sobrepõe o contador.
+[ ] O contador fica abaixo dos filtros.
+[ ] Limpar filtros mantém texto visível no hover.
+[ ] Mobile não cria scroll horizontal.
+
+G. ADMIN
+[ ] Checkbox “Categoria ativa” fica centrado com o texto.
+[ ] Logo Admin não recebe fundo branco forçado.
+[ ] Fundo transparente funciona quando ativado.
+[ ] Favicon Admin continua aplicado.
+
+H. SEO
+[ ] Home contém canonical.
+[ ] Home contém meta description.
+[ ] Perfil aprovado tem title/description/OG próprios.
+[ ] Serviço aprovado tem title/description/Schema Service.
+[ ] Search Console token, quando configurado, aparece como google-site-verification.
+[ ] Dashboard/Login/Admin permanecem noindex.
+
+I. AUDITORIA LOCAL
+[ ] `npm run seo:audit` termina sem ERR.
+[ ] Executar PageSpeed Mobile e Desktop conforme `PAGESPEED-V7.7.md`.

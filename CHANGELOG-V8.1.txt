@@ -1,0 +1,11 @@
+Yuran Multicerviços — V8.1
+
+- Criada página pública /planos.
+- Comparação mensal/anual dos planos.
+- Adicionada API pública GET /api/plans.
+- Adicionada aba Plano na área profissional.
+- Mostra plano atual, estado, validade, período de tolerância e utilização.
+- Mostra limites de projetos e serviços personalizados.
+- CTA de upgrade preparado para futura integração de pagamento.
+- Incluído /planos no sitemap.
+- Pagamentos reais ainda não são processados nesta versão.

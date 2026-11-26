@@ -1,0 +1,8 @@
+Yuran Multicerviços V7.7.2 — interface mobile
+
+- Cabeçalho mobile ancorado à largura visível do ecrã para impedir deslocamento lateral.
+- Seletores visuais Yuran com pesquisa e opção selecionada, sem alterar os valores enviados às APIs.
+- Campos de celular e WhatsApp com indicativo do país separado e seleção visual; número completo guardado em formato internacional.
+- Indicadores ocultos respeitam o atributo hidden; contador de notificações legível.
+- Cache PWA e URLs dos assets atualizados para 7.7.2.
+- Nenhuma migração SQL nova.

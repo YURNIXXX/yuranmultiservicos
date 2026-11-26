@@ -1,0 +1,19 @@
+YURAN MULTICERVIÇOS — V7.2.2 EMAIL FLOW
+
+OBJETIVO
+- E-mails automáticos para o ciclo da conta: cadastro/em análise, identidade aprovada ou rejeitada, perfil aprovado/rejeitado/suspenso e aprovação total da conta.
+- Advertências e suspensões continuam automáticas por serem comunicações críticas de segurança/estado da conta.
+- Serviços, projetos, avaliações e outras atualizações comuns permanecem como notificações internas, sem e-mail automático.
+- Mensagens informativas do administrador continuam manuais pela área Comunicação e são enviadas por e-mail + notificação interna.
+
+IMPORTANTE SOBRE RESEND
+No Render, EMAIL_FROM deve conter APENAS o valor, por exemplo:
+Yuran Multicerviços <onboarding@resend.dev>
+
+NÃO use:
+EMAIL_FROM = Yuran Multicerviços <...>
+
+E não use um endereço @gmail.com como remetente na Resend. Para produção, verifique um domínio próprio na Resend e use algo como:
+Yuran Multicerviços <notificacoes@seudominio.com>
+
+SEM SQL NOVO.

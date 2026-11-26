@@ -1,11 +1,14 @@
 {
   "name": "yuranmultiservicos",
-  "version": "3.0.0",
-  "description": "Plataforma profissional multi-serviços com verificação, moderação, confiança, SEO, PWA, métricas e segurança.",
+  "version": "9.0.0",
+  "description": "Yuran Multicerviços V9.0.0 — novo sistema visual (ver DESIGN.md).",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "security:check": "node scripts/check-v7.8.1.cjs && node scripts/check-v7.8.2-security.cjs && node scripts/check-v7.8.3.cjs && node scripts/check-v7.8.4.cjs && node scripts/check-v7.9.0-security.cjs && node scripts/check-v7.9.4-dialogs.cjs && node scripts/check-v7.9.7-sitemap.cjs",
+    "security:migrate": "node scripts/migrate-private-files.cjs",
+    "seo:audit": "node scripts/seo-audit.js"
   },
   "engines": {
     "node": ">=20 <25"

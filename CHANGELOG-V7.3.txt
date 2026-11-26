@@ -1,0 +1,52 @@
+YURAN MULTICERVIÇOS V7.3 — ESTABILIDADE E SEGURANÇA
+
+1. PAINEL ADMINISTRATIVO
+- Ações de editar/remover dos módulos Serviços, Portfólio, Equipa, Parceiros, Ligações e Redes sociais foram reestruturadas.
+- Remoção deixou de depender de handlers inline; botões recebem eventos JavaScript diretamente.
+- Foram adicionados formulários de edição onde antes só existia remoção.
+- Portfólio administrativo permite editar dados e adicionar/substituir múltiplas imagens.
+- Denúncias, avaliações e recuperação de senha também deixaram de depender de onclick inline.
+- Modal próprio da plataforma continua sendo usado para confirmações e motivos.
+
+2. PERFIL DO FUNDADOR / PERFIS OFICIAIS
+- Novo tipo de perfil: Profissional, Membro da equipa, Fundador ou Conta institucional.
+- Campo de cargo institucional.
+- Campo Perfil oficial.
+- Campo Sobre o fundador / mensagem institucional.
+- Badge Fundador e Perfil oficial no perfil público e diretório.
+- O selo verificado continua independente e só é atribuído manualmente pela administração.
+
+3. VÍDEO DE APRESENTAÇÃO
+- Nova configuração em Admin > Geral.
+- Ativar/desativar seção, título, texto e link do YouTube.
+- O vídeo usa fachada leve: primeiro carrega apenas thumbnail; o iframe YouTube só é criado ao clicar.
+- Reprodução ocorre dentro da plataforma usando youtube-nocookie.com.
+
+4. IDENTIDADE VISUAL
+- Upload independente do logo da barra para modo claro e modo escuro.
+- Troca automática ao alternar tema.
+- Fallback para o outro logo/versão antiga quando uma versão não estiver configurada.
+
+5. PERFIL PÚBLICO
+- Textos longos passam a usar alinhamento justificado em desktop/tablet.
+- No mobile permanecem alinhados à esquerda para evitar espaços irregulares.
+
+6. SEGURANÇA
+- SESSION_SECRET deixa de usar segredo padrão fixo quando a variável não está configurada.
+- Painel Segurança mostra aviso se SESSION_SECRET não estiver configurada no Render.
+- Proteção de origem considera corretamente proxy HTTPS/Render e PUBLIC_BASE_URL.
+- Validação Sec-Fetch-Site para requisições protegidas.
+- Uploads aceitam apenas JPG, PNG, WebP e, para documentos, PDF.
+- Assinatura real do conteúdo dos arquivos continua sendo validada antes do armazenamento.
+- RLS reforçada nas tabelas sensíveis pelo SQL V7.3.
+- Privilégios diretos de anon/authenticated revogados nas tabelas internas; backend SERVICE ROLE continua responsável pelo acesso.
+- Bucket de documentos permanece privado.
+
+7. CACHE
+- Service Worker atualizado para yuran-static-v7.3.
+- Assets principais recebem versão v=7.3.
+
+8. HARDENING ADICIONAL
+- Recuperação de senha do administrador também recebe rate limit.
+- Uploads deixam de reutilizar nome/extensão fornecidos pelo navegador; o servidor deriva extensão e MIME da assinatura binária real.
+- Se o painel tiver falha de carregamento que não seja sessão expirada, mostra erro e opção de tentar novamente em vez de redirecionar silenciosamente para o login.

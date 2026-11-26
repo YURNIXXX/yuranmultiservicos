@@ -1,0 +1,26 @@
+YURAN MULTICERVIÇOS V7.5 — RELATÓRIO DE VALIDAÇÃO
+=================================================
+
+Validações executadas antes do empacotamento:
+- node --check em server.js, admin/admin.js, professional/dashboard.js, public/js/*.js e Service Workers.
+- Validação dos blocos JavaScript inline das páginas principais.
+- Validação JSON de package.json e dos manifests PWA.
+- Verificação de referências estáticas href/src locais: 0 referências ausentes.
+- Contagem de chaves CSS em admin/admin.css, public/css/style.css e public/css/platform.css: balanceadas.
+- Busca por padrões típicos de segredos/tokens embutidos no código: nenhum valor real encontrado.
+- Revisão do fluxo de cadastro por etapas e dos campos obrigatórios da validação.
+- Revisão do fluxo Google -> Painel Profissional.
+- Revisão da sidebar Admin: expansão/recolha, grupos, estado persistente e drawer mobile.
+- Revisão das regras de alinhamento: texto corrido justificado; fatos/listas alinhados à esquerda.
+- Revisão do Service Worker Admin: fallback offline próprio, sem reutilizar login/dashboard cacheado.
+- Revisão do 2FA: tolerância TOTP ±30 s e recuperação protegida por senha administrativa + ADMIN_RECOVERY_KEY.
+
+Validações que ainda dependem do ambiente publicado:
+- Login Google real no Supabase.
+- Leitura/escrita real na base Supabase e Storage.
+- Envio real de e-mail pelo Resend.
+- TOTP real com o segredo já armazenado no ambiente Render.
+- Comportamento visual em aparelhos físicos e navegadores específicos.
+- Instalação PWA em Windows/Android/iOS conforme suporte do navegador.
+
+Após deploy, siga a sequência de testes de INSTALACAO-V7.5.txt.

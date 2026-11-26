@@ -1,0 +1,19 @@
+Yuran Multicerviços — V9.0 (redesenho visual)
+
+Só interface. Sem alterações em server.js, base de dados, API ou área admin.
+
+- Novo sistema visual: public/css/design.css + DESIGN.md.
+- Fonte Schibsted Grotesk alojada em /fonts (cumpre a CSP).
+- Home: pesquisa no topo (campo + área, envia para /profissionais), números reais da plataforma num bloco da cor da marca,
+  serviços em lista, passos em régua, parceiros em linha estática, rodapé escuro.
+- Planos: colunas alinhadas, plano destacado, ícone "–" quando não há serviços personalizados.
+  Texto anual corrigido: "paga 10 meses e usa 12" + média real por mês (antes dividia por 10).
+  O script de /planos passou para public/js/plans.js (o verificador de segurança já passa por inteiro).
+- Diretório de profissionais: filtros corrigidos (os seletores apareciam cortados como "To…", "Qu…").
+- Cabeçalho em barra simples; botão "Área profissional" em contorno (antes verde neon).
+- Verde #00D88B/#00bd79 substituído por --brand-deep em platform.css (afeta também o painel profissional).
+- Etiquetas em caixa alta passaram a frase normal (HTML e JS).
+- Link "Planos" adicionado ao menu de todas as páginas públicas.
+- Service worker: cache yuran-static-v9.0.0 inclui design.css e a fonte.
+
+Não incluído: o painel do profissional (professional/dashboard.html) e o admin mantêm o visual anterior, exceto as cores trocadas em platform.css.

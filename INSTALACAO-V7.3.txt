@@ -1,0 +1,74 @@
+INSTALAÇÃO — YURAN MULTICERVIÇOS V7.3
+
+1. SUPABASE
+Abra Supabase > SQL Editor > New query.
+Execute uma única vez o arquivo:
+  supabase-v7.3.sql
+
+O SQL não apaga contas, serviços, projetos ou avaliações existentes.
+Ele adiciona campos para perfis oficiais/fundador e reforça RLS/permissões.
+
+2. GITHUB
+Substitua os arquivos atuais pelos arquivos desta V7.3 e faça commit.
+
+3. RENDER
+Aguarde o deploy automático ou use Manual Deploy > Deploy latest commit.
+
+Confirme estas variáveis:
+- SUPABASE_URL
+- SUPABASE_ANON_KEY
+- SUPABASE_SERVICE_ROLE_KEY
+- ADMIN_RECOVERY_KEY
+- PUBLIC_BASE_URL
+- IDENTITY_RETENTION_DAYS
+- RESEND_API_KEY (quando usar e-mail)
+- EMAIL_FROM (quando usar e-mail)
+- SESSION_SECRET  <-- IMPORTANTE
+
+Se SESSION_SECRET ainda não existir, crie uma chave aleatória longa (mínimo recomendado: 48 caracteres).
+Não reutilize senha do Admin e não publique a chave no GitHub.
+
+4. DEPOIS DO DEPLOY
+Faça Ctrl+Shift+R no computador.
+No telemóvel, feche/reabra o navegador se necessário.
+
+5. TESTE ADMIN
+Teste:
+- editar/remover serviço
+- editar/remover projeto
+- destacar/remover destaque
+- editar/remover equipa
+- editar/remover parceiro
+- editar/remover ligação
+- editar/remover rede social
+- validar identidade
+- aprovar/rejeitar perfil
+- denúncias e avaliações
+
+6. PERFIL DO FUNDADOR
+Admin > Moderação > profissional desejado > Editar dados do profissional:
+- Tipo de perfil: Fundador
+- Cargo institucional: ex. Fundador da Yuran Multicerviços
+- Marcar Perfil oficial
+- Preencher Mensagem institucional / Sobre o fundador
+- Guardar
+
+O selo verificado continua sendo controlado separadamente.
+
+7. VÍDEO
+Admin > Geral > Vídeo de apresentação:
+- ativar
+- título
+- URL do YouTube
+- texto de apresentação
+- Guardar
+
+8. LOGOS
+Admin > Geral > identidade visual:
+- Logo do menu — modo claro
+- Logo do menu — modo escuro
+- Logo da área inicial
+
+9. SEGURANÇA
+Admin > Segurança deve mostrar o estado de SESSION_SECRET e 2FA.
+Ative 2FA antes do lançamento público.

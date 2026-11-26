@@ -1,0 +1,60 @@
+YURAN MULTICERVIÇOS V7.4 — EXPERIÊNCIA, ONBOARDING E APPS
+===========================================================
+
+1. NOVO CADASTRO PROFISSIONAL
+- Criação da conta exige apenas nome completo, e-mail, senha e confirmação.
+- Cadastro não envia mais o perfil automaticamente para análise.
+- Login/cadastro com Google cria ou associa a conta e abre diretamente o Painel Profissional.
+- Contas criadas apenas com Google podem definir uma senha própria depois no Painel Profissional, sem exigir uma senha anterior inexistente.
+- Novas contas começam em estado interno "draft / perfil em preparação".
+
+2. ONBOARDING EM ETAPAS
+- Checklist no Painel Profissional: Conta criada, Dados pessoais, Perfil profissional, Documentação e Validação administrativa.
+- Dados obrigatórios para enviar à validação incluem endereço, cidade/província, celular, WhatsApp, data de nascimento e número de identificação.
+- Documentos de identidade são carregados apenas no momento de enviar o perfil para validação.
+- Termos de Uso e Política de Privacidade são aceites antes do envio à validação, e não na criação básica da conta.
+- Perfil rejeitado pode ser corrigido e reenviado; se a identidade já estiver validada, o documento não precisa ser reenviado.
+
+3. NOVOS CAMPOS
+- Data de nascimento.
+- Número de identificação.
+- Campos privados continuam fora das APIs públicas do perfil.
+- Admin consegue consultar/editar esses dados durante a moderação.
+
+4. MOBILE / RESPONSIVIDADE
+- Reforço contra overflow horizontal.
+- Cabeçalho do perfil/Área Profissional fica sticky no mobile.
+- Conteúdo adaptado para 100% de zoom, sem depender de reduzir zoom no telefone.
+- Textos profissionais longos ficam justificados em TV, desktop, tablet e mobile.
+- Melhorias em grids, formulários, imagens, ações e onboarding no mobile.
+
+5. COMO FUNCIONA
+- CTA final "Criar conta profissional".
+- CTA "Já tenho conta".
+- Fluxo explicativo atualizado para o novo cadastro por etapas.
+
+6. YURAN ADMIN REDESENHADO
+- Nova identidade visual com verde Yuran como cor de ação.
+- Sidebar moderna, recolhível no desktop e em formato drawer no mobile.
+- Topbar com título da área atual, acesso ao site e botão de instalação.
+- Centro de controlo com indicadores de profissionais/serviços/projetos pendentes, denúncias, visualizações e contactos.
+- Mantidas todas as áreas e IDs necessários às funcionalidades administrativas existentes.
+
+7. PWA / APLICATIVOS INSTALÁVEIS
+- Yuran Multicerviços agora possui manifest, ícones 192/512 e Service Worker V7.4.
+- Pode ser instalada em dispositivos compatíveis como aplicação web (PWA).
+- Yuran Admin possui manifest, ícones e Service Worker próprios, com identidade separada.
+- No desktop compatível, o Admin pode ser instalado como "Yuran Admin" e aberto em janela própria.
+- O backend, Supabase e regras de segurança continuam únicos para site e PWAs.
+
+8. SEGURANÇA E MODERAÇÃO
+- Continua o hardening da V7.3/V7.3.1.
+- Contas draft não aparecem na fila do Admin até o utilizador enviar o perfil para validação.
+- Publicação de serviços/projetos exige status aprovado + identidade aprovada.
+- Dados privados de nascimento/identificação não foram adicionados às APIs públicas.
+
+9. BANCO DE DADOS
+- Novo arquivo: supabase-v7.4.sql
+- Adiciona birth_date, id_number e validation_submitted_at.
+- Adiciona o status "draft" ao constraint de professional_profiles.status.
+- Não apaga contas ou conteúdos existentes.

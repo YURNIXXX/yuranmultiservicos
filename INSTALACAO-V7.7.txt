@@ -1,0 +1,50 @@
+YURAN MULTICERVIÇOS V7.7 — INSTALAÇÃO / ATUALIZAÇÃO
+
+IMPORTANTE: execute o SQL ANTES do deploy.
+
+1) SUPABASE
+- SQL Editor -> New query.
+- Execute `supabase-v7.7.sql` uma única vez.
+- A migração adiciona os campos de confirmação de e-mail.
+- Não apaga dados existentes.
+
+2) RENDER — CONFIRMAR VARIÁVEIS
+Obrigatórias/essenciais:
+- SUPABASE_URL
+- SUPABASE_ANON_KEY
+- SUPABASE_SERVICE_ROLE_KEY
+- SESSION_SECRET
+- ADMIN_PASSWORD (quando aplicável ao seu fluxo administrativo)
+- ADMIN_RECOVERY_KEY
+- TOTP_ENCRYPTION_KEY
+- PUBLIC_BASE_URL
+- IDENTITY_RETENTION_DAYS
+- RESEND_API_KEY
+- EMAIL_FROM
+
+Opcional para Search Console:
+- GOOGLE_SITE_VERIFICATION
+
+Para a confirmação de e-mail funcionar, RESEND_API_KEY e EMAIL_FROM precisam estar válidos e o remetente precisa respeitar as regras da conta Resend.
+
+3) GITHUB / RENDER
+- Substitua os ficheiros do repositório pelos da V7.7.
+- Commit/push.
+- Aguarde o deploy ficar Live.
+- Abra `/health`.
+- Confirme `"ok":true` e `"version":"7.7.4"`.
+
+4) CACHE / PWA
+- Faça hard refresh.
+- Feche/reabra a PWA se necessário.
+- Os Service Workers usam cache V7.7.
+
+5) SEARCH CONSOLE
+- Admin -> Visão geral -> Google Search Console — token de verificação.
+- Cole apenas o valor do `content` da meta tag, não a tag completa.
+- Guarde.
+- Confirme a propriedade no Google Search Console.
+- Envie `/sitemap.xml`.
+
+6) TESTES
+Execute `QA-V7.7.txt`.

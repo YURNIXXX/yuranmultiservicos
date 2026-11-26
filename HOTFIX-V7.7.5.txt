@@ -1,0 +1,20 @@
+Yuran Multicerviços V7.7.5 — profissionais, login e responsividade
+
+- Novas contas Google e contas por e-mail em estado "draft" aparecem no painel
+  administrativo como "Em preparação". A contagem "aguardando decisão" continua
+  reservada a perfis já enviados para análise.
+- Para rascunhos, o painel explica que faltam o envio do perfil e dos documentos;
+  não oferece aprovação, validação documental, selo, rejeição ou suspensão.
+  O servidor só permite publicar depois de validar documento e dados obrigatórios.
+- A navegação do painel em tablet/telemóvel usa uma coluna dentro do menu lateral,
+  sem sobreposição entre grupos, títulos e links. A área de moderação adapta
+  botões e formulário às larguras intermédias.
+- Campos de e-mail da área profissional começam vazios e esperam que o utilizador
+  selecione o campo e digite. O navegador ou gestor de senhas pode ainda oferecer
+  sugestões próprias; o controlo sobre essas sugestões depende do dispositivo.
+- O login administrativo inclui botão acessível para mostrar/ocultar a senha.
+- Limites de largura e de deslocação horizontal foram ajustados no perfil público
+  para evitar espaço lateral ao deslizar no telemóvel.
+
+Instalação: substitua os ficheiros da versão anterior e faça o deploy no Render.
+Não há migração de banco de dados nesta atualização.

@@ -1,0 +1,36 @@
+YURAN MULTISSERVIÇOS V7.7.1 — HOTFIX MOBILE DO PAINEL PROFISSIONAL
+
+Escopo:
+- Não altera banco de dados.
+- Não exige novo SQL.
+- Não altera autenticação, aprovação, e-mail, serviços ou projetos.
+- Corrige apenas a experiência/responsividade da Área Profissional em telas pequenas.
+
+Alterações:
+1. Navegação mobile do painel:
+   - Visão geral
+   - Perfil
+   - Serviços
+   - Projetos
+   - Mais
+   O botão "Mais" abre Avaliações, Notificações e Segurança.
+
+2. Remove sobreposição dos nomes das abas.
+3. Mantém a navegação legível em 320, 360, 390 e 412 px.
+4. Melhora quebra dos badges de estado.
+5. Ajusta cabeçalho da conta e ações no mobile.
+6. Melhora o card "Ativação da conta" e o estado "Em preparação".
+7. Estiliza "Completar agora" para seguir o visual da plataforma.
+8. Atualiza cache/versionamento dos assets para 7.7.1.
+
+TESTE:
+- Faça deploy dos arquivos desta versão.
+- Abra o site em aba anónima/privada no telemóvel para evitar cache antigo.
+- Entre na Área Profissional.
+- Teste: Visão geral, Perfil, Serviços, Projetos e Mais.
+- Em Mais, teste Avaliações, Notificações e Segurança.
+- Role a página e confirme que o menu não cobre o conteúdo de forma indevida.
+- Teste em orientação vertical e horizontal.
+
+SQL:
+- Nenhum.

@@ -1,0 +1,8 @@
+Yuran Multicerviços V7.7.4 — verificação de e-mail
+
+- Após cadastro, falha real de envio é mostrada ao profissional no Perfil.
+- Em caso de recusa pelo provedor, restaurar o estado anterior do código para permitir novo envio.
+- O passo inicial indica E-mail por confirmar até a confirmação efetiva; cartão do Perfil distingue código ativo de código ausente ou expirado.
+- Administração: remetente de teste sinalizado e envio a todos bloqueado até o domínio próprio ser verificado.
+- Requer configurar domínio verificado na Resend e EMAIL_FROM correspondente para enviar para outros profissionais.
+- Nenhuma migração SQL nova.

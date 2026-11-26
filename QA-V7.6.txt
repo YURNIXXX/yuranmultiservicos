@@ -1,0 +1,69 @@
+YURAN MULTICERVIÇOS V7.6 — ROTEIRO DE TESTE
+
+A. ADMIN / CATEGORIAS
+[ ] Abrir Admin -> Categorias.
+[ ] Criar uma categoria de teste com palavras-chave.
+[ ] Editar a categoria.
+[ ] Desativar/ativar a categoria.
+[ ] Confirmar que categoria ativa aparece no formulário do profissional.
+[ ] Confirmar que categoria em uso não é apagada indevidamente.
+
+B. SERVIÇOS / PREÇO
+[ ] Criar serviço com "Sob consulta".
+[ ] Criar serviço com "Com preço" e informar, por exemplo, 1500.
+[ ] Confirmar exibição "1 500 MT" ou equivalente no público.
+[ ] Confirmar que o profissional não digita a moeda.
+
+C. PESQUISA
+[ ] Pesquisar "plantas" e verificar serviços de agropecuária/jardinagem relacionados.
+[ ] Pesquisar "fios" e verificar eletricidade.
+[ ] Pesquisar "logotipo" e verificar design/branding.
+[ ] Testar palavra com/sem acento.
+[ ] Confirmar que "Limpar filtros" continua visível no hover.
+[ ] Confirmar Admin -> Desempenho/analytics de pesquisa após buscas.
+
+D. LOCALIZAÇÃO
+[ ] No Admin, mapear um bairro para distrito e província.
+[ ] Num perfil, preencher província, distrito e bairro.
+[ ] Pesquisar o bairro parcialmente.
+[ ] Se não houver resultado exato, confirmar resultados do distrito/província relacionados.
+
+E. PERFIL / CV
+[ ] Completar perfil sem CV.
+[ ] Confirmar que pode atingir 100% sem CV.
+[ ] Confirmar que CV aparece como opcional.
+[ ] Editar perfil e confirmar modal "aplicar alterações" antes de guardar.
+
+F. PERFIL JÁ APROVADO
+[ ] Com perfil aprovado/publicado, editar bio ou outro dado.
+[ ] Confirmar que o perfil público antigo continua visível.
+[ ] No Admin, verificar comparação das alterações pendentes.
+[ ] Aprovar alterações e confirmar atualização pública.
+[ ] Repetir e rejeitar alterações: versão pública anterior deve continuar visível.
+
+G. SESSÃO PROFISSIONAL
+[ ] Fazer login.
+[ ] Atualizar a página várias vezes.
+[ ] Fechar e reabrir o navegador.
+[ ] Confirmar que a sessão continua ativa.
+[ ] Clicar em Sair e confirmar que a sessão termina.
+
+H. UX / IDENTIDADE
+[ ] Confirmar Área Profissional verde #00D88B no menu.
+[ ] Testar selects, checkboxes, radios e upload no desktop e mobile.
+[ ] Confirmar que certificações aparecem separadas, não como bloco único.
+[ ] Confirmar alinhamento à esquerda de idiomas/certificações/área de atendimento.
+
+I. ADMIN BRANDING
+[ ] Alterar logo do Admin.
+[ ] Alterar fundo do logo.
+[ ] Alterar favicon do Admin.
+[ ] Atualizar a página e confirmar persistência.
+
+J. REGRESSÃO
+[ ] Login Google.
+[ ] 2FA Admin.
+[ ] Moderação de identidade.
+[ ] Serviços/projetos existentes.
+[ ] E-mails/Comunicação.
+[ ] Mobile em 100% de zoom, sem scroll horizontal indesejado.

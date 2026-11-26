@@ -1,0 +1,62 @@
+YURAN MULTICERVIÇOS V7.4 — INSTALAÇÃO / ATUALIZAÇÃO
+===================================================
+
+IMPORTANTE
+Use esta versão sobre a V7.3.1. Não precisa executar novamente os SQLs das versões antigas se eles já foram aplicados.
+
+PASSO 1 — SUPABASE
+1. Abra Supabase > SQL Editor > New query.
+2. Abra o arquivo supabase-v7.4.sql deste pacote.
+3. Execute todo o conteúdo UMA VEZ.
+4. Confirme que apareceu Success.
+
+PASSO 2 — GITHUB
+1. Extraia este pacote.
+2. Envie/substitua os arquivos do repositório com o conteúdo desta pasta.
+3. Faça commit/push.
+
+PASSO 3 — RENDER
+Mantenha as variáveis já utilizadas, principalmente:
+- SUPABASE_URL
+- SUPABASE_ANON_KEY
+- SUPABASE_SERVICE_ROLE_KEY
+- ADMIN_RECOVERY_KEY
+- SESSION_SECRET
+- TOTP_ENCRYPTION_KEY
+- PUBLIC_BASE_URL
+- IDENTITY_RETENTION_DAYS
+- RESEND_API_KEY (quando configurada)
+- EMAIL_FROM (quando configurado)
+
+Aguarde o deploy ficar Live.
+
+PASSO 4 — LIMPAR CACHE APÓS O DEPLOY
+No computador: Ctrl + Shift + R.
+Se necessário: DevTools > Application > Service Workers > Update/Unregister e recarregue.
+No telefone: feche a aba/app e abra novamente. O Service Worker foi atualizado para V7.4.
+
+PASSO 5 — TESTE DO NOVO CADASTRO
+1. Abra /profissional.
+2. Crie uma conta somente com nome, e-mail e senha, ou use Google.
+3. Confirme entrada direta em /profissional/dashboard.
+4. Confirme que a conta mostra "Perfil em preparação" e não aparece no Admin > Moderação ainda.
+5. Complete dados pessoais e profissionais.
+6. Carregue frente/verso do documento e envie para validação.
+7. Confirme que somente agora o perfil aparece em Admin > Moderação.
+8. Valide identidade e aprove perfil.
+9. Confirme que serviços/projetos só ficam liberados após aprovação completa.
+
+PASSO 6 — TESTE MOBILE
+- Abra um perfil profissional em 100% de zoom.
+- Não deve existir scroll horizontal.
+- O cabeçalho deve permanecer visível ao rolar.
+- Textos longos devem estar justificados.
+
+PASSO 7 — YURAN ADMIN
+- Abra /admin/dashboard.html.
+- Confirme nova sidebar/topbar/Visão geral.
+- Teste todos os CRUDs e moderação.
+- Em Chrome/Edge, quando disponível, use o botão Instalar para instalar Yuran Admin como PWA.
+
+PWA PÚBLICA
+Em navegador compatível, o botão de instalação aparece automaticamente quando os critérios de PWA forem atendidos. A plataforma pode ser instalada sem criar um APK nesta fase.

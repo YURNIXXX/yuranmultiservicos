@@ -1,0 +1,22 @@
+YURAN MULTICERVIÇOS — V7.3.1 HOTFIX 2FA
+
+CAUSA
+Na V7.2.x, o segredo TOTP era cifrado com uma chave derivada de SESSION_SECRET.
+Ao fortalecer SESSION_SECRET na V7.3, uma chave antiga de 2FA pode deixar de ser decifrável.
+O código de 6 dígitos continua correto no autenticador, mas o servidor perde acesso ao segredo TOTP antigo.
+
+CORREÇÃO PERMANENTE
+V7.3.1 separa as responsabilidades:
+- SESSION_SECRET: assina/protege sessões.
+- TOTP_ENCRYPTION_KEY: cifra exclusivamente o segredo do autenticador.
+
+PASSOS DE RECUPERAÇÃO
+1. Supabase > SQL Editor: execute supabase-v7.3.1-reset-2fa.sql uma única vez.
+2. Render > Environment: crie TOTP_ENCRYPTION_KEY com uma chave aleatória longa (48+ caracteres).
+3. Faça deploy da V7.3.1.
+4. Entre no Admin apenas com a senha.
+5. Admin > Segurança > Configurar 2FA.
+6. Apague no autenticador a entrada antiga da Yuran e adicione a nova chave apresentada.
+7. Confirme com um novo código de 6 dígitos.
+
+NÃO altere TOTP_ENCRYPTION_KEY depois de ativar o 2FA. Se precisar rotacioná-la, desative o 2FA primeiro e configure-o novamente após a rotação.

@@ -1,0 +1,37 @@
+YURAN MULTICERVIÇOS V7.7 — CHANGELOG
+
+CONTA E CONFIANÇA
+- Confirmação de e-mail por código de 6 dígitos.
+- Código expira em 10 minutos.
+- Reenvio protegido por intervalo/rate limit.
+- Contas Google são marcadas como e-mail verificado.
+- Envio para validação bloqueado enquanto e-mail não estiver confirmado.
+- Número do BI/documento associado visualmente à frente e verso enviados.
+
+DESEMPENHO
+- Sessão é verificada antes de inicializar Google/Login.
+- Utilizador já autenticado deixa de ver o formulário de login antes do dashboard.
+- releaseExpiredSuspensions removido do caminho crítico do dashboard.
+- Limpeza de suspensões passa a rotina periódica.
+- Dashboard usa estado visual de carregamento.
+
+UX
+- Modais do perfil com botões na identidade Yuran.
+- Depois de guardar e confirmar, retorna à Visão geral.
+- Checkboxes realinhados.
+- Área de pesquisa sem margem negativa/colisão do contador.
+- Branding do Admin revisto; opção de fundo transparente no bloco do logo.
+
+SEO
+- sitemap.xml revisto.
+- robots.txt revisto.
+- llms.txt adicionado.
+- canonical URL.
+- Open Graph.
+- Twitter Cards.
+- Schema.org JSON-LD.
+- SEO dinâmico em perfis e serviços.
+- Google Search Console preparado por token.
+- Áreas privadas com noindex.
+- `npm run seo:audit`.
+- Guia PageSpeed/Lighthouse.

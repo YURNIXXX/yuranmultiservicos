@@ -1,0 +1,7 @@
+Yuran Multicerviços V7.7.3 — cabeçalho mobile
+
+- A div .header-actions ocupa uma coluna própria na .site-header mobile, impedindo que os comandos saiam do ecrã.
+- A .nav abre abaixo da .site-header com posicionamento absoluto relativo ao cabeçalho.
+- Menus abrem e fecham por botão, clique fora e Escape; aria-expanded indica o estado.
+- Assets e cache PWA versionados para 7.7.3.
+- Mantidas as correções e os seletores de países da V7.7.2. Nenhuma migração SQL nova.

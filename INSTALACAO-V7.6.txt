@@ -1,0 +1,44 @@
+YURAN MULTICERVIÇOS V7.6 — INSTALAÇÃO / ATUALIZAÇÃO
+
+IMPORTANTE: execute o SQL ANTES do novo deploy.
+
+1) SUPABASE
+- Abra o projeto Supabase.
+- SQL Editor -> New query.
+- Abra `supabase-v7.6.sql` do pacote.
+- Cole todo o conteúdo e execute uma única vez.
+- A migração é aditiva e não apaga profissionais, serviços, projetos ou avaliações.
+
+2) RENDER — VARIÁVEIS IMPORTANTES
+Confirme que continuam configuradas, conforme o seu ambiente:
+- SUPABASE_URL
+- SUPABASE_ANON_KEY
+- SUPABASE_SERVICE_ROLE_KEY
+- SESSION_SECRET
+- ADMIN_PASSWORD (se a senha ainda não estiver armazenada com hash no conteúdo administrativo)
+- ADMIN_RECOVERY_KEY
+- TOTP_ENCRYPTION_KEY
+- PUBLIC_BASE_URL
+- IDENTITY_RETENTION_DAYS
+- RESEND_API_KEY
+- EMAIL_FROM
+
+Não coloque valores reais dessas variáveis no GitHub.
+
+3) GITHUB
+- Substitua o conteúdo do repositório pelos ficheiros da V7.6.
+- Faça commit e push.
+- Se o repositório for privado, confirme que o Render mantém acesso ao GitHub.
+
+4) RENDER
+- Aguarde o deploy ficar Live.
+- Abra: https://SEU-DOMINIO/health
+- Confirme: "ok": true e "version": "7.6.0".
+
+5) CACHE/PWA
+- Faça hard refresh no desktop.
+- No telemóvel/PWA, feche e abra novamente.
+- Se alguma tela antiga persistir, remova apenas os dados/cache do site e abra novamente.
+
+6) TESTES
+Execute `QA-V7.6.txt` antes de considerar a atualização concluída.

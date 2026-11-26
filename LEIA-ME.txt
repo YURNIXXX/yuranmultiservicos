@@ -1,0 +1,19 @@
+Yuran Multicerviços — atualização 7.7.6
+
+Extraia este ZIP na pasta principal do projeto, onde estão package.json,
+server.js e render.yaml. Mantenha a estrutura de pastas e substitua os
+ficheiros existentes. Depois publique as alterações no Render.
+
+O pacote inclui a correção anterior de sessões independentes para admin e
+profissionais. Depois do deploy, faça login novamente uma vez.
+
+Verifique:
+1. Crie ou edite um projeto e selecione um serviço da própria conta.
+2. Aprove o projeto; veja o nome do serviço no projeto publicado e o
+   contador de projetos no cartão do serviço correspondente.
+3. Abra Notificações: as mensagens continuam não lidas até clicar em
+   «Marcar todas como lidas».
+
+As contagens públicas mostram apenas projetos publicados e associados a
+serviços aprovados. Projetos antigos sem serviço não entram na contagem
+até serem editados e associados a um serviço.
